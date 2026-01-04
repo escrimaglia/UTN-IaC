@@ -1,40 +1,40 @@
-# Proyecto de Automatización de Redes con Netmiko y Jinja2
+# Network Automation Project with Netmiko and Jinja2
 
-## Descripción del Proyecto
+## Project Description
 
-Este proyecto implementa una solución completa de automatización para la configuración de dispositivos de red Cisco IOS utilizando Python, Netmiko y templates Jinja2. El objetivo es simplificar y estandarizar la gestión de configuraciones de red mediante scripts modulares y reutilizables.
+This project implements a complete automation solution for configuring Cisco IOS network devices using Python, Netmiko, and Jinja2 templates. The objective is to simplify and standardize network configuration management through modular and reusable scripts.
 
-**Autor:** Ed Scrimaglia  
-**Versión:** 1.0  
-**Fecha de Creación:** 13 de Septiembre de 2025
-**Descripción**: Ejemplo con Netmiko, configuración y renderización de templates jinja2
-
----
-
-## Características Principales
-
-- Conexión SSH automatizada a dispositivos Cisco IOS
-- Configuración mediante comandos directos (`send_config_set`)
-- Configuración desde archivos de texto (`send_config_from_file`)
-- Generación dinámica de configuraciones usando templates Jinja2
-- Validación automática de errores de configuración
-- Gestión de comandos multilínea con patrones de interacción
-- Clase reutilizable para operaciones de red (`ConfigurationClass`)
-- Manejo robusto de excepciones de conexión
+**Author:** Ed Scrimaglia  
+**Version:** 1.0  
+**Creation Date:** September 13, 2025
+**Description**: Example with Netmiko, configuration and rendering of jinja2 templates
 
 ---
 
-## Dependencias
+## Main Features
 
-El proyecto utiliza las siguientes librerías Python:
+- Automated SSH connection to Cisco IOS devices
+- Configuration via direct commands (`send_config_set`)
+- Configuration from text files (`send_config_from_file`)
+- Dynamic configuration generation using Jinja2 templates
+- Automatic configuration error validation
+- Multi-line command management with interaction patterns
+- Reusable class for network operations (`ConfigurationClass`)
+- Robust connection exception handling
+
+---
+
+## Dependencies
+
+The project uses the following Python libraries:
 
 ```toml
 [dependencies]
-netmiko >= 4.6.0    # Librería para conexiones SSH a dispositivos de red
-jinja2 >= 3.1.6     # Motor de templates para generación de configuraciones
+netmiko >= 4.6.0    # Library for SSH connections to network devices
+jinja2 >= 3.1.6     # Template engine for configuration generation
 ```
 
-Para instalar las dependencias:
+To install dependencies:
 
 ```bash
 uv add netmiko jinja2
@@ -42,55 +42,55 @@ uv add netmiko jinja2
 
 ---
 
-## Estructura del Proyecto
+## Project Structure
 
 ```tree
 ejemplo2/
-├── config.txt                      # Archivo de configuración generado
-├── datos_config.py                 # Datos para templates (interfaces)
-├── datos_device.py                 # Parámetros de conexión al dispositivo
-├── integrador2.py                  # Script principal integrador
-├── netmiko_clase.py                # Clase ConfigurationClass
-├── netmiko_eje1.py                 # Ejemplo 1: send_config_set
-├── netmiko_eje2.py                 # Ejemplo 2: send_config_from_file
-├── netmiko_eje3.py                 # Ejemplo 3: Templates Jinja2
-├── netmiko_eje4.py                 # Ejemplo 4: send_multiline
-├── pyproject.toml                  # Configuración del proyecto
-├── README.md                       # Este archivo
+├── config.txt                      # Generated configuration file
+├── datos_config.py                 # Data for templates (interfaces)
+├── datos_device.py                 # Device connection parameters
+├── integrador2.py                  # Main integrator script
+├── netmiko_clase.py                # ConfigurationClass class
+├── netmiko_eje1.py                 # Example 1: send_config_set
+├── netmiko_eje2.py                 # Example 2: send_config_from_file
+├── netmiko_eje3.py                 # Example 3: Jinja2 templates
+├── netmiko_eje4.py                 # Example 4: send_multiline
+├── pyproject.toml                  # Project configuration
+├── README.md                       # This file
 └── templates/
-    ├── temp_interfaces.j2          # Template principal de interfaces
+    ├── temp_interfaces.j2          # Main interfaces template
     └── ejemplos_templates/
-        ├── filters.j2              # Ejemplos de filtros Jinja2
-        ├── include.j2              # Ejemplo de inclusión de templates
-        ├── included.j2             # Template incluido
-        ├── namespace.j2            # Ejemplo de namespaces
-        └── variables.j2            # Ejemplos de variables
+        ├── filters.j2              # Jinja2 filter examples
+        ├── include.j2              # Template inclusion example
+        ├── included.j2             # Included template
+        ├── namespace.j2            # Namespace example
+        └── variables.j2            # Variable examples
 ```
 
 ---
 
-## Componentes del Proyecto
+## Project Components
 
-### 1. **Clase ConfigurationClass** (`netmiko_clase.py`)
+### 1. **ConfigurationClass Class** (`netmiko_clase.py`)
 
-Clase principal que encapsula todas las operaciones de configuración de dispositivos de red.
+Main class that encapsulates all network device configuration operations.
 
-**Métodos principales:**
+**Main Methods:**
 
-| Método | Descripción |
+| Method | Description |
 |--------|-------------|
-| `connect(device_params)` | Establece conexión SSH al dispositivo |
-| `send_config_from_file(connection, file_path)` | Envía configuración desde archivo |
-| `send_config_set(connection, config_commands)` | Envía lista de comandos de configuración |
-| `check_config_errors(output)` | Valida errores en la salida de configuración |
-| `send_command(connection, command)` | Ejecuta comando show con soporte TextFSM |
-| `save_config(connection)` | Guarda la configuración del dispositivo |
-| `disconnect(connection)` | Cierra la conexión SSH |
-| `create_config_template(template_file, data, config_file)` | Genera configuración desde template Jinja2 |
+| `connect(device_params)` | Establishes SSH connection to the device |
+| `send_config_from_file(connection, file_path)` | Sends configuration from file |
+| `send_config_set(connection, config_commands)` | Sends list of configuration commands |
+| `check_config_errors(output)` | Validates errors in configuration output |
+| `send_command(connection, command)` | Executes show command with TextFSM support |
+| `save_config(connection)` | Saves device configuration |
+| `disconnect(connection)` | Closes SSH connection |
+| `create_config_template(template_file, data, config_file)` | Generates configuration from Jinja2 template |
 
-### 2. **Archivos de Datos**
+### 2. **Data Files**
 
-**`datos_device.py`:** Define los parámetros de conexión al dispositivo:
+**`datos_device.py`:** Defines device connection parameters:
 
 ```python
 datos_device = {
@@ -102,7 +102,7 @@ datos_device = {
 }
 ```
 
-**`datos_config.py`:** Estructura de datos para renderizar templates:
+**`datos_config.py`:** Data structure for rendering templates:
 
 ```python
 datos_config = {
@@ -119,9 +119,9 @@ datos_config = {
 }
 ```
 
-### 3. **Templates Jinja2**
+### 3. **Jinja2 Templates**
 
-**Template principal** (`templates/temp_interfaces.j2`):
+**Main template** (`templates/temp_interfaces.j2`):
 
 ```jinja
 {% for inter in interfaces -%}
@@ -136,20 +136,20 @@ interface {{ inter.name }}
 {% endfor %}
 ```
 
-El directorio `ejemplos_templates/` contiene ejemplos didácticos de:
+The `ejemplos_templates/` directory contains educational examples of:
 
-- Uso de filtros Jinja2 (upper, lower, join, etc.)
-- Variables y alcance
-- Inclusión de templates
+- Using Jinja2 filters (upper, lower, join, etc.)
+- Variables and scope
+- Template inclusion
 - Namespaces
 
 ---
 
-## Ejemplos de Uso
+## Usage Examples
 
-### **Ejemplo 1: Configuración con send_config_set** (`netmiko_eje1.py`)
+### **Example 1: Configuration with send_config_set** (`netmiko_eje1.py`)
 
-Envía comandos directamente como lista:
+Sends commands directly as a list:
 
 ```python
 config_commands = [
@@ -160,33 +160,33 @@ config_commands = [
 output = connect.send_config_set(config_commands)
 ```
 
-### **Ejemplo 2: Configuración desde archivo** (`netmiko_eje2.py`)
+### **Example 2: Configuration from file** (`netmiko_eje2.py`)
 
-Lee configuración desde `config.txt` y la aplica:
+Reads configuration from `config.txt` and applies it:
 
 ```python
 output = connect.send_config_from_file('config.txt')
 ```
 
-### **Ejemplo 3: Templates Jinja2** (`netmiko_eje3.py`)
+### **Example 3: Jinja2 Templates** (`netmiko_eje3.py`)
 
-Genera configuración dinámica desde template:
+Generates dynamic configuration from template:
 
 ```python
 template = env.get_template('temp_interfaces.j2')
 output = template.render(datos)
 ```
 
-### **Ejemplo 4: Comandos Multilínea** (`netmiko_eje4.py`)
+### **Example 4: Multi-line Commands** (`netmiko_eje4.py`)
 
-Maneja interacciones complejas (ej: borrado de archivos):
+Handles complex interactions (e.g., file deletion):
 
 ```python
-# Usando timing
+# Using timing
 commands = ["del flash:/eje1.txt", "\n", "y"]
 output = connection.send_multiline_timing(commands)
 
-# Usando patrones
+# Using patterns
 commands = [
     ["del flash:/eje2.txt", r"Delete filename"],
     ["\n", r"confirm"],
@@ -195,42 +195,42 @@ commands = [
 output = connection.send_multiline(commands)
 ```
 
-### **Script Integrador** (`integrador2.py`)
+### **Integrator Script** (`integrador2.py`)
 
-Combina todas las funcionalidades en flujos completos:
+Combines all functionalities in complete workflows:
 
-**Flujo 1: Configuración desde template**
+**Flow 1: Configuration from template**
 
-1. Conecta al dispositivo
-2. Genera configuración desde template Jinja2
-3. Aplica la configuración
-4. Valida errores
-5. Guarda cambios
-6. Verifica configuración final
-7. Guarda
-
----
-
-## Casos de Uso
-
-1. **Provisioning Masivo**: Configurar múltiples dispositivos con parámetros personalizados
-2. **Estandarización**: Aplicar configuraciones base consistentes
-3. **Migraciones**: Actualizar configuraciones de forma controlada
-4. **Troubleshooting**: Ejecutar comandos show y análisis con TextFSM
-5. **Configuraciones Complejas**: Usar templates para BGP, OSPF, VLANs, etc.
+1. Connects to the device
+2. Generates configuration from Jinja2 template
+3. Applies the configuration
+4. Validates errors
+5. Saves changes
+6. Verifies final configuration
+7. Saves
 
 ---
 
-## Manejo de Errores
+## Use Cases
 
-El proyecto implementa:
+1. **Mass Provisioning**: Configure multiple devices with custom parameters
+2. **Standardization**: Apply consistent base configurations
+3. **Migrations**: Update configurations in a controlled manner
+4. **Troubleshooting**: Execute show commands and analysis with TextFSM
+5. **Complex Configurations**: Use templates for BGP, OSPF, VLANs, etc.
 
-- **Excepciones de conexión**: `NetmikoTimeoutException`, `NetmikoAuthenticationException`
-- **Validación de sintaxis**: Detección de "Invalid input" con indicación de línea exacta
-- **Verificación de estado**: Comprobación de conexión activa antes de operaciones
-- **Logging informativo**: Mensajes claros de éxito/error en cada operación
+---
 
-Ejemplo de validación:
+## Error Handling
+
+The project implements:
+
+- **Connection exceptions**: `NetmikoTimeoutException`, `NetmikoAuthenticationException`
+- **Syntax validation**: Detection of "Invalid input" with exact line indication
+- **Status verification**: Active connection check before operations
+- **Informative logging**: Clear success/error messages in each operation
+
+Validation example:
 
 ```python
 if "Invalid input" in output:
@@ -243,37 +243,37 @@ if "Invalid input" in output:
 
 ---
 
-## Seguridad
+## Security
 
-- Las credenciales se almacenan en `datos_device.py` (no incluir en control de versiones)
-- Uso de `ssh_config_file` para configuración SSH personalizada
-- Se recomienda uso de variables de entorno para credenciales en producción
+- Credentials are stored in `datos_device.py` (do not include in version control)
+- Use of `ssh_config_file` for custom SSH configuration
+- Recommended use of environment variables for credentials in production
 
 ---
 
-## Referencias y Recursos
+## References and Resources
 
-- [Documentación de Netmiko](https://github.com/ktbyers/netmiko)
+- [Netmiko Documentation](https://github.com/ktbyers/netmiko)
 - [Jinja2 Documentation](https://jinja.palletsprojects.com/)
 - [Cisco IOS Command Reference](https://www.cisco.com/c/en/us/support/ios-nx-os-software/ios-15-4m-t/products-command-reference-list.html)
 
 ---
 
-## Aprendizaje
+## Learning
 
-Este proyecto es ideal para:
+This project is ideal for:
 
-- Estudiantes de redes y automatización
-- Ingenieros de red que inician en DevOps
-- Práctica de Python aplicado a redes
-- Comprensión de templates dinámicos con Jinja2
-
----
-
-## Licencia
-
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+- Networking and automation students
+- Network engineers starting in DevOps
+- Python practice applied to networks
+- Understanding dynamic templates with Jinja2
 
 ---
 
-**Última actualización**: Diciembre 2025
+## License
+
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
+
+---
+
+**Last updated**: December 2025

@@ -1,175 +1,175 @@
-# Sistema de Automatización de Red con Netmiko y Jinja2
+# Network Automation System with Netmiko and Jinja2
 
 ## Network Automation Engineer - UTNFRC
 
-## Descripción General
+## General Description
 
-Este proyecto implementa una solución avanzada de automatización de red que permite configurar múltiples dispositivos Cisco de forma completamente automatizada. Utiliza Python con las librerías Netmiko para conectividad SSH y Jinja2 para generación de configuraciones mediante plantillas. La arquitectura modular permite escalabilidad y mantenimiento sencillo.
+This project implements an advanced network automation solution that enables fully automated configuration of multiple Cisco devices. It uses Python with Netmiko libraries for SSH connectivity and Jinja2 for configuration generation via templates. The modular architecture allows for scalability and easy maintenance.
 
-## Metadatos del Proyecto
+## Project Metadata
 
-- **Proyecto**: Simulacro de Caso de Uso
-- **Versión**: 1.0
-- **Autor**: Ed Scrimaglia
-- **Fecha de Creación**: 15 de Junio de 2025
+- **Project**: Use Case Simulation
+- **Version**: 1.0
+- **Author**: Ed Scrimaglia
+- **Creation Date**: June 15, 2025
 
-## Arquitectura del Sistema
+## System Architecture
 
-### Componentes Principales
+### Main Components
 
-1. **Script Principal (`main.py`)**: Coordina todo el flujo de automatización
-2. **Clase ConfigDevices (`class_device_config.py`)**: Maneja conexiones y configuraciones de dispositivos
-3. **Clase CreateConfig (`class_create_configs.py`)**: Gestiona creación de archivos de configuración y plantillas
-4. **Modelo de Datos (`modelo_datos.yaml`)**: Define la infraestructura y configuraciones
-5. **Plantillas Jinja2 (`templates/`)**: Templates para diferentes tipos de configuración
+1. **Main Script (`main.py`)**: Coordinates the entire automation workflow
+2. **ConfigDevices Class (`class_device_config.py`)**: Manages device connections and configurations
+3. **CreateConfig Class (`class_create_configs.py`)**: Manages configuration file and template creation
+4. **Data Model (`modelo_datos.yaml`)**: Defines infrastructure and configurations
+5. **Jinja2 Templates (`templates/`)**: Templates for different configuration types
 
-### Flujo de Trabajo
+### Workflow
 
 ```mermaid
 graph TD
-    A[Iniciar main.py] --> B[Leer modelo_datos.yaml]
-    B --> C[Procesar config_spec por dispositivo]
-    C --> D[Generar archivos .cfg con Jinja2]
-    D --> E[Conectar SSH a dispositivos]
-    E --> F[Aplicar configuraciones]
-    F --> G[Verificar errores]
-    G --> H{¿Errores?}
-    H -->|No| I[Guardar configuración]
-    H -->|Sí| J[Abortar y reportar]
-    I --> K[Desconectar]
+    A[Start main.py] --> B[Read modelo_datos.yaml]
+    B --> C[Process config_spec per device]
+    C --> D[Generate .cfg files with Jinja2]
+    D --> E[SSH connect to devices]
+    E --> F[Apply configurations]
+    F --> G[Verify errors]
+    G --> H{Errors?}
+    H -->|No| I[Save configuration]
+    H -->|Yes| J[Abort and report]
+    I --> K[Disconnect]
     J --> K
-    K --> L[Siguiente dispositivo]
+    K --> L[Next device]
 ```
 
-## Estructura Detallada del Proyecto
+## Detailed Project Structure
 
 ```tree
 .
-├── main.py                      # Script principal de orquestación
-├── class_device_config.py       # Clase para gestión de dispositivos de red
-├── class_create_configs.py      # Clase para creación de configuraciones
-├── modelo_datos.yaml           # Modelo de datos de infraestructura
-├── pyproject.toml              # Configuración del proyecto y dependencias
-├── README.md                   # Esta documentación
-├── configs/                    # Archivos de configuración generados
-│   ├── SW_Bld_A_vlan.cfg      # Configuración de VLANs para SW_Bld_A
-│   ├── SW_Bld_A_int_access.cfg # Interfaces de acceso para SW_Bld_A
-│   ├── SW_Bld_A_int_trunk.cfg  # Interfaces trunk para SW_Bld_A
-│   ├── SW_Bld_B_vlan.cfg      # Configuración de VLANs para SW_Bld_B
-│   ├── SW_Bld_B_int_access.cfg # Interfaces de acceso para SW_Bld_B
-│   └── SW_Bld_B_int_trunk.cfg  # Interfaces trunk para SW_Bld_B
-└── templates/                  # Plantillas Jinja2
-    ├── vlans.j2               # Template para configuración de VLANs
-    ├── int_access.j2          # Template para interfaces de acceso
-    └── int_trunk.j2           # Template para interfaces trunk
+├── main.py                      # Main orchestration script
+├── class_device_config.py       # Class for network device management
+├── class_create_configs.py      # Class for configuration creation
+├── modelo_datos.yaml           # Infrastructure data model
+├── pyproject.toml              # Project configuration and dependencies
+├── README.md                   # This documentation
+├── configs/                    # Generated configuration files
+│   ├── SW_Bld_A_vlan.cfg      # VLAN configuration for SW_Bld_A
+│   ├── SW_Bld_A_int_access.cfg # Access interfaces for SW_Bld_A
+│   ├── SW_Bld_A_int_trunk.cfg  # Trunk interfaces for SW_Bld_A
+│   ├── SW_Bld_B_vlan.cfg      # VLAN configuration for SW_Bld_B
+│   ├── SW_Bld_B_int_access.cfg # Access interfaces for SW_Bld_B
+│   └── SW_Bld_B_int_trunk.cfg  # Trunk interfaces for SW_Bld_B
+└── templates/                  # Jinja2 templates
+    ├── vlans.j2               # Template for VLAN configuration
+    ├── int_access.j2          # Template for access interfaces
+    └── int_trunk.j2           # Template for trunk interfaces
 ```
 
-## Análisis Detallado de Componentes
+## Detailed Component Analysis
 
-### 1. Script Principal (`main.py`)
+### 1. Main Script (`main.py`)
 
-**Funcionalidades:**
+**Functionalities:**
 
-- **Orquestación completa**: Coordina todas las fases del proceso
-- **Medición de tiempo**: Calcula duración de configuración por dispositivo y total
-- **Logging detallado**: Proporciona retroalimentación durante todo el proceso
-- **Manejo de errores**: Implementa fail-fast para cada dispositivo
+- **Complete orchestration**: Coordinates all process phases
+- **Time measurement**: Calculates duration per device and total configuration time
+- **Detailed logging**: Provides feedback throughout the entire process
+- **Error handling**: Implements fail-fast for each device
 
-**Flujo de ejecución:**
+**Execution flow:**
 
-1. **Inicialización**:
+1. **Initialization**:
 
    ```python
-   net_conf = ConfigDevices()      # Para conexiones de red
-   create_config = CreateConfig()  # Para generación de configuraciones
+   net_conf = ConfigDevices()      # For network connections
+   create_config = CreateConfig()  # For configuration generation
    ```
 
-2. **Lectura del modelo**:
+2. **Model reading**:
 
    ```python
    dic_modelo = create_config.read_yaml("modelo_datos.yaml")
    ```
 
-3. **Generación dinámica de configuraciones**:
+3. **Dynamic configuration generation**:
 
    ```python
    for config in device.get("config_spec"):
        config_template = config.get("template")
        data_path = config.get("data_path")
-       # Resolución dinámica de datos
+       # Dynamic data resolution
        template = create_config.render_template(
            template_name=config_template, 
            data={data_path: device.get(data_path)}
        )
    ```
 
-4. **Aplicación de configuraciones**:
-   - Conexión SSH por dispositivo
-   - Aplicación secuencial de archivos de configuración
-   - Verificación de errores después de cada aplicación
-   - Guardado de configuración si no hay errores
+4. **Configuration application**:
+   - SSH connection per device
+   - Sequential application of configuration files
+   - Error verification after each application
+   - Configuration save if no errors
 
-### 2. Clase ConfigDevices (`class_device_config.py`)
+### 2. ConfigDevices Class (`class_device_config.py`)
 
-**Responsabilidades:**
+**Responsibilities:**
 
-- Gestión de conexiones SSH con dispositivos de red
-- Envío de comandos de configuración
-- Verificación de errores en salidas de comandos
-- Guardado de configuraciones
+- SSH connection management with network devices
+- Sending configuration commands
+- Error verification in command outputs
+- Configuration saving
 
-**Métodos clave:**
+**Key methods:**
 
 ```python
 def connect_device(self, device_params: dict) -> ConnectHandler:
-    # Establece conexión SSH usando parámetros del modelo
+    # Establishes SSH connection using model parameters
     
 def send_config_commands(self, connection, config_file=None):
-    # Envía configuración desde archivo a dispositivo
+    # Sends configuration from file to device
     
 def check_output_error(self, output: str) -> bool:
-    # Busca indicadores de error en salida de comandos
+    # Searches for error indicators in command output
     error_indicators = ["% Invalid input", "% Incomplete command", "% Ambiguous command"]
     
 def save_configuration(self, connection: ConnectHandler):
-    # Ejecuta 'copy running-config startup-config'
+    # Executes 'copy running-config startup-config'
 ```
 
-**Manejo de Excepciones:**
+**Exception Handling:**
 
-- `NetmikoTimeoutException`: Timeout de conexión
-- `NetmikoAuthenticationException`: Fallo de autenticación
-- Errores genéricos de lectura/escritura
+- `NetmikoTimeoutException`: Connection timeout
+- `NetmikoAuthenticationException`: Authentication failure
+- Generic read/write errors
 
-### 3. Clase CreateConfig (`class_create_configs.py`)
+### 3. CreateConfig Class (`class_create_configs.py`)
 
-**Responsabilidades:**
+**Responsibilities:**
 
-- Renderizado de plantillas Jinja2
-- Creación y escritura de archivos de configuración
-- Lectura de archivos YAML
-- Serialización JSON
+- Jinja2 template rendering
+- Configuration file creation and writing
+- YAML file reading
+- JSON serialization
 
-**Métodos principales:**
+**Main methods:**
 
 ```python
 def render_template(self, template_name: str, data: any, template_dir: str = "./templates"):
-    # Carga y renderiza plantilla Jinja2 con datos específicos
+    # Loads and renders Jinja2 template with specific data
     loader = FileSystemLoader(template_dir)
     env = Environment(loader=loader)
     template = env.get_template(template_name)
     return template.render(data)
 
 def guardar_config_file(self, filename: str, configuration: str):
-    # Escribe configuración renderizada a archivo
+    # Writes rendered configuration to file
     
 def read_yaml(self, file_path: str) -> dict:
-    # Lee y parsea archivo YAML del modelo de datos
+    # Reads and parses YAML file from data model
 ```
 
-### 4. Modelo de Datos (`modelo_datos.yaml`)
+### 4. Data Model (`modelo_datos.yaml`)
 
-**Estructura jerárquica:**
+**Hierarchical structure:**
 
 ```yaml
 modelo:
@@ -212,17 +212,17 @@ modelo:
             config_file: "int_trunk.cfg"
 ```
 
-**Innovación: config_spec:**
+**Innovation: config_spec:**
 
-La sección `config_spec` permite definir dinámicamente qué configuraciones generar:
+The `config_spec` section allows for dynamic definition of which configurations to generate:
 
-- `data_path`: Referencia a los datos del dispositivo (`vlans`, `interfaces`)
-- `template`: Plantilla Jinja2 a usar
-- `config_file`: Nombre del archivo de salida
+- `data_path`: Reference to device data (`vlans`, `interfaces`)
+- `template`: Jinja2 template to use
+- `config_file`: Output file name
 
-### 5. Plantillas Jinja2
+### 5. Jinja2 Templates
 
-#### Template de VLANs (`vlans.j2`)
+#### VLAN Template (`vlans.j2`)
 
 ```jinja
 {# VLANs configuration template #}
@@ -234,7 +234,7 @@ vlan {{ vlan.id }}
 {% endfor -%}
 ```
 
-#### Template de Interfaces de Acceso (`int_access.j2`)
+#### Access Interface Template (`int_access.j2`)
 
 ```jinja
 {# Interface Access Configuration Template #}
@@ -250,7 +250,7 @@ interface {{ interface.name }}
 {% endfor -%}
 ```
 
-#### Template de Interfaces Trunk (`int_trunk.j2`)
+#### Trunk Interface Template (`int_trunk.j2`)
 
 ```jinja
 {# Interface Trunk Configuration Template #}
@@ -267,130 +267,130 @@ interface {{ interface.name }}
 {% endfor -%}
 ```
 
-## Topología de Red Configurada
+## Configured Network Topology
 
-El sistema configura una red con:
+The system configures a network with:
 
-### Dispositivos
+### Devices
 
 1. **SW_Bld_A** (10.2.0.10X)
 2. **SW_Bld_B** (10.2.0.10X)
 
-### VLANs (en ambos switches)
+### VLANs (on both switches)
 
 - **VLAN 10**: Ingenieria
 - **VLAN 20**: Produccion  
 - **VLAN 30**: Finanzas
 
-### Interfaces por dispositivo
+### Interfaces per device
 
-- **2 interfaces trunk**: Conexiones a switches core (GigabitEthernet0/1-2)
-- **2 interfaces de acceso**: Conexiones a PCs (GigabitEthernet1/1-2)
+- **2 trunk interfaces**: Connections to core switches (GigabitEthernet0/1-2)
+- **2 access interfaces**: Connections to PCs (GigabitEthernet1/1-2)
 
-## Dependencias y Requisitos
+## Dependencies and Requirements
 
-### Dependencias Python (pyproject.toml)
+### Python Dependencies (pyproject.toml)
 
 ```toml
 requires-python = ">=3.12"
 dependencies = [
-    "jinja2>=3.1.6",    # Motor de plantillas
-    "netmiko>=4.6.0",   # Conexiones SSH a dispositivos de red
+    "jinja2>=3.1.6",    # Template engine
+    "netmiko>=4.6.0",   # SSH connections to network devices
 ]
 ```
 
-### Requisitos de infraestructura
+### Infrastructure requirements
 
-- Dispositivos Cisco con SSH habilitado
-- Conectividad IP a dispositivos de gestión
-- Credenciales de acceso válidas
+- Cisco devices with SSH enabled
+- IP connectivity to management devices
+- Valid access credentials
 
-### 1. Clonar el Repositorio
+### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd sim_caso
 ```
 
-### 2. Configurar Entorno Python
+### 2. Configure Python Environment
 
-Usando `uv` (recomendado):
+Using `uv` (recommended):
 
 ```bash
 uv sync
 ```
 
-### 2. Configuración del modelo
+### 2. Model configuration
 
-- Editar `modelo_datos.yaml` con datos de tu infraestructura
-- Ajustar IPs, credenciales y configuraciones de dispositivos
-- Modificar plantillas según necesidades específicas
+- Edit `modelo_datos.yaml` with your infrastructure data
+- Adjust IPs, credentials, and device configurations
+- Modify templates according to specific needs
 
-### 3. Ejecución
+### 3. Execution
 
 ```bash
 python main.py
 ```
 
-## Características Avanzadas
+## Advanced Features
 
-### 1. **Configuración Dinámica Basada en Especificaciones**
+### 1. **Dynamic Configuration Based on Specifications**
 
-- El sistema usa `config_spec` para determinar qué configuraciones generar
-- Permite agregar nuevos tipos de configuración sin modificar código
-- Resolución dinámica de datos usando `data_path`
+- System uses `config_spec` to determine which configurations to generate
+- Allows adding new configuration types without modifying code
+- Dynamic data resolution using `data_path`
 
-### 2. **Separación de Responsabilidades**
+### 2. **Separation of Responsibilities**
 
-- **ConfigDevices**: Lógica de red y dispositivos
-- **CreateConfig**: Generación de configuraciones y manejo de archivos
-- **main.py**: Orquestación y control de flujo
+- **ConfigDevices**: Network and device logic
+- **CreateConfig**: Configuration generation and file handling
+- **main.py**: Orchestration and flow control
 
-### 3. **Manejo Robusto de Errores**
+### 3. **Robust Error Handling**
 
-- Verificación de errores después de cada comando
-- Sistema fail-fast que aborta ante errores críticos
-- Logging detallado para debugging
+- Error verification after each command
+- Fail-fast system that aborts on critical errors
+- Detailed logging for debugging
 
-### 4. **Medición de Rendimiento**
+### 4. **Performance Measurement**
 
-- Cronometraje por dispositivo y total
-- Feedback en tiempo real del progreso
-- Información detallada de cada operación
+- Per-device and total timing
+- Real-time progress feedback
+- Detailed information for each operation
 
-### 5. **Escalabilidad**
+### 5. **Scalability**
 
-- Fácil agregar nuevos dispositivos al modelo YAML
-- Templates reutilizables para diferentes configuraciones
-- Estructura modular para extensiones futuras
+- Easy to add new devices to YAML model
+- Reusable templates for different configurations
+- Modular structure for future extensions
 
-## Casos de Uso Prácticos
+## Practical Use Cases
 
-### 1. **Despliegue Inicial de Red**
+### 1. **Initial Network Deployment**
 
 ```bash
-# Configurar múltiples switches desde cero
+# Configure multiple switches from scratch
 python main.py
 ```
 
-### 2. **Actualización Masiva de Configuraciones**
+### 2. **Mass Configuration Update**
 
-- Modificar `modelo_datos.yaml`
-- Re-ejecutar para aplicar cambios
+- Modify `modelo_datos.yaml`
+- Re-execute to apply changes
 
-### 3. **Estandarización de Configuraciones**
+### 3. **Configuration Standardization**
 
-- Garantizar configuraciones consistentes
-- Reducir errores de configuración manual
+- Guarantee consistent configurations
+- Reduce manual configuration errors
 
-### 4. **Auditoría y Documentación**
+### 4. **Auditing and Documentation**
 
-- Los archivos generados sirven como documentación
-- Historial de configuraciones aplicadas
+- Generated files serve as documentation
+- History of applied configurations
 
-## Monitoreo y Logging
+## Monitoring and Logging
 
-El sistema proporciona feedback detallado:
+The system provides detailed feedback:
 
 ```text
 -> Starting Network Automation Configuration Device process...
@@ -412,9 +412,9 @@ Configuration from 'SW_Bld_A_vlan.cfg' applied successfully to device 'SW_Bld_A'
 -> Total time taken to configure all devices: 0:00:32.456789
 ```
 
-## Ejemplo de Archivos Generados
+## Generated Files Example
 
-### Archivo de VLANs (`SW_Bld_A_vlan.cfg`)
+### VLANs File (`SW_Bld_A_vlan.cfg`)
 
 ```conf
 !
@@ -429,7 +429,7 @@ vlan 30
 !
 ```
 
-### Archivo de Interfaces Trunk (`SW_Bld_A_int_trunk.cfg`)
+### Trunk Interfaces File (`SW_Bld_A_int_trunk.cfg`)
 
 ```conf
 !
@@ -447,137 +447,137 @@ interface GigabitEthernet0/2
 !
 ```
 
-## Flujo de Datos Detallado
+## Detailed Data Flow
 
-### 1. **Lectura del Modelo**
+### 1. **Model Reading**
 
 ```python
-# El sistema lee modelo_datos.yaml y lo convierte en diccionario Python
+# The system reads modelo_datos.yaml and converts it to Python dictionary
 dic_modelo = create_config.read_yaml("modelo_datos.yaml")
 ```
 
-### 2. **Procesamiento por Dispositivo**
+### 2. **Per-Device Processing**
 
 ```python
 for device in dic_modelo.get("modelo").get("infra_spec").get("devices"):
     hostname = device.get('hostname')
-    # Para cada config_spec del dispositivo...
+    # For each device config_spec...
     for config in device.get("config_spec"):
-        # Resuelve dinámicamente los datos
+        # Dynamically resolves data
         data_path = config.get("data_path")
-        data = device.get(data_path)  # Ej: device['vlans']
+        data = device.get(data_path)  # E.g.: device['vlans']
 ```
 
-### 3. **Generación de Configuración**
+### 3. **Configuration Generation**
 
 ```python
-# Renderiza plantilla con datos específicos
+# Renders template with specific data
 template = create_config.render_template(
     template_name=config_template,
     data={data_path: device.get(data_path)}
 )
 ```
 
-### 4. **Aplicación en Dispositivo**
+### 4. **Device Application**
 
 ```python
-# Conecta SSH y aplica configuración
+# SSH connects and applies configuration
 connection = net_conf.connect_device(connection_params)
 output = net_conf.send_config_commands(connection, config_file=config_file)
 ```
 
-## Extensiones y Mejoras Futuras
+## Extensions and Future Improvements
 
-### 1. **Funcionalidades Avanzadas**
+### 1. **Advanced Functionalities**
 
-- Backup automático antes de cambios
-- Rollback en caso de fallas
-- Validación de configuraciones pre-aplicación
-- Soporte para más tipos de dispositivos (Juniper, Arista, etc.)
+- Automatic backup before changes
+- Rollback on failures
+- Pre-application configuration validation
+- Support for more device types (Juniper, Arista, etc.)
 
-### 2. **Mejoras de Usabilidad**
+### 2. **Usability Improvements**
 
-- Interfaz web para gestión de configuraciones
-- API REST para integración con otros sistemas
-- Dashboard de monitoreo en tiempo real
-- Notificaciones por email/Slack
+- Web interface for configuration management
+- REST API for integration with other systems
+- Real-time monitoring dashboard
+- Email/Slack notifications
 
-### 3. **Características Enterprise**
+### 3. **Enterprise Features**
 
-- Integración con sistemas de gestión de cambios
-- Logging avanzado con diferentes niveles
-- Métricas y telemetría
-- Soporte para configuraciones encriptadas
+- Integration with change management systems
+- Advanced logging with different levels
+- Metrics and telemetry
+- Support for encrypted configurations
 
-### 4. **Optimizaciones**
+### 4. **Optimizations**
 
-- Configuración paralela de dispositivos
-- Cache de plantillas renderizadas
-- Compresión de archivos de configuración
-- Optimización de conexiones SSH
+- Parallel device configuration
+- Rendered template caching
+- Configuration file compression
+- SSH connection optimization
 
-## Resolución de Problemas Comunes
+## Common Troubleshooting
 
-### 1. **Error de Conexión SSH**
+### 1. **SSH Connection Error**
 
 ```text
 NetmikoTimeoutException: TCP connection to device failed
 ```
 
-**Solución**: Verificar conectividad IP y que SSH esté habilitado en el dispositivo.
+**Solution**: Verify IP connectivity and that SSH is enabled on the device.
 
-### 2. **Error de Autenticación**
+### 2. **Authentication Error**
 
 ```text
 NetmikoAuthenticationException: Authentication failed
 ```
 
-**Solución**: Verificar credenciales en `connection` del modelo YAML.
+**Solution**: Verify credentials in the YAML model's `connection` section.
 
-### 3. **Error en Comando**
+### 3. **Command Error**
 
 ```text
 % Invalid input detected at '^' marker
 ```
 
-**Solución**: Revisar sintaxis en plantillas Jinja2.
+**Solution**: Review syntax in Jinja2 templates.
 
-### 4. **Archivo de Template No Encontrado**
+### 4. **Template File Not Found**
 
 ```text
 TemplateNotFound: vlans.j2
 ```
 
-**Solución**: Verificar que el archivo existe en directorio `templates/`.
+**Solution**: Verify that the file exists in the `templates/` directory.
 
-## Conclusiones
+## Conclusions
 
-Este sistema representa una implementación profesional y escalable de automatización de red que:
+This system represents a professional and scalable network automation implementation that:
 
-- **Simplifica** la gestión de configuraciones de red
-- **Estandariza** los procesos de despliegue
-- **Reduce** errores humanos en configuraciones
-- **Acelera** el tiempo de despliegue de infraestructura
-- **Documenta** automáticamente las configuraciones aplicadas
-- **Facilita** el mantenimiento y actualizaciones futuras
+- **Simplifies** network configuration management
+- **Standardizes** deployment processes
+- **Reduces** human errors in configurations
+- **Accelerates** infrastructure deployment time
+- **Automatically documents** applied configurations
+- **Facilitates** maintenance and future updates
 
-La arquitectura modular y el uso de estándares de la industria (YAML, Jinja2, Netmiko) hace que este proyecto sea una excelente base para implementaciones de automatización de red en entornos de producción.
+The modular architecture and use of industry standards (YAML, Jinja2, Netmiko) makes this project an excellent foundation for network automation implementations in production environments.
 
-### Beneficios Clave
+### Key Benefits
 
-1. **Automatización Completa**: Desde generación hasta aplicación
-2. **Flexibilidad**: Sistema basado en configuración declarativa
-3. **Escalabilidad**: Fácil agregar dispositivos y configuraciones
-4. **Mantenibilidad**: Código modular y bien estructurado
-5. **Observabilidad**: Logging detallado y medición de rendimiento
-6. **Confiabilidad**: Manejo robusto de errores y validaciones
-
----
-
-## Licencia
-
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+1. **Complete Automation**: From generation to application
+2. **Flexibility**: Declarative configuration-based system
+3. **Scalability**: Easy to add devices and configurations
+4. **Maintainability**: Modular and well-structured code
+5. **Observability**: Detailed logging and performance measurement
+6. **Reliability**: Robust error handling and validations
 
 ---
 
-**Última actualización**: Diciembre 2025
+## License
+
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
+
+---
+
+**Last updated**: December 2025

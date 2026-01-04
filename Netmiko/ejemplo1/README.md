@@ -1,235 +1,235 @@
-# Proyecto Netmiko - Ejemplos de Automatización de Redes Cisco
+# Netmiko Project - Cisco Network Automation Examples
 
-## Descripción del Proyecto
+## Project Description
 
-Este proyecto contiene una colección de scripts Python que demuestran el uso de **Netmiko** para la automatización de dispositivos de red Cisco. El proyecto incluye ejemplos progresivos que van desde comandos básicos hasta implementaciones más avanzadas utilizando parseo de configuraciones con **TextFSM** y **CiscoConfParse**.
+This project contains a collection of Python scripts that demonstrate the use of **Netmiko** for automating Cisco network devices. The project includes progressive examples ranging from basic commands to more advanced implementations using configuration parsing with **TextFSM** and **CiscoConfParse**.
 
-## Información del Proyecto
+## Project Information
 
-**Autor:** Ed Scrimaglia  
-**Versión:** 1.0  
-**Fecha de Creación:** 6 de Septiembre de 2025
-**Descripción**: Primer ejemplo Netmiko
+**Author:** Ed Scrimaglia  
+**Version:** 1.0  
+**Creation Date:** September 6, 2025
+**Description**: First Netmiko example
 
-## Dependencias
+## Dependencies
 
-El proyecto utiliza las siguientes bibliotecas principales:
+The project uses the following main libraries:
 
-- **netmiko** (>=4.6.0): Biblioteca multi-vendor para simplificar conexiones SSH a dispositivos de red
-- **ciscoconfparse** (>=1.9.52): Biblioteca para parsear y analizar configuraciones de dispositivos Cisco
+- **netmiko** (>=4.6.0): Multi-vendor library to simplify SSH connections to network devices
+- **ciscoconfparse** (>=1.9.52): Library for parsing and analyzing Cisco device configurations
 
-Estas dependencias se encuentran definidas en el archivo `pyproject.toml`.
+These dependencies are defined in the `pyproject.toml` file.
 
-### 1. Clonar el Repositorio
+### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd ejemplo1
 ```
 
-### 2. Configurar Entorno Python
+### 2. Configure Python Environment
 
-Usando `uv` (recomendado):
+Using `uv` (recommended):
 
 ```bash
 uv sync
 ```
 
-## Estructura del Proyecto
+## Project Structure
 
 ```tree
 ejemplo1/
-├── pyproject.toml          # Configuración del proyecto y dependencias
-├── netmiko_clase.py        # Clase principal NetmikoInicial con métodos reutilizables
-├── netmiko_eje1.py         # Ejemplo 1: Comandos básicos
-├── netmiko_eje2.py         # Ejemplo 2: Uso de TextFSM
-├── netmiko_eje3.py         # Ejemplo 3: Parámetros de optimización
-├── netmiko_eje4.py         # Ejemplo 4: CiscoConfParse
-└── integrador1.py          # Ejemplo integrador usando la clase NetmikoInicial
+├── pyproject.toml          # Project configuration and dependencies
+├── netmiko_clase.py        # Main NetmikoInicial class with reusable methods
+├── netmiko_eje1.py         # Example 1: Basic commands
+├── netmiko_eje2.py         # Example 2: TextFSM usage
+├── netmiko_eje3.py         # Example 3: Optimization parameters
+├── netmiko_eje4.py         # Example 4: CiscoConfParse
+└── integrador1.py          # Integrator example using NetmikoInicial class
 ```
 
-## Descripción de los Scripts
+## Script Descriptions
 
-### 1. `netmiko_clase.py` - Clase NetmikoInicial
+### 1. `netmiko_clase.py` - NetmikoInicial Class
 
-Implementa una clase Python que encapsula las funcionalidades más comunes de Netmiko:
+Implements a Python class that encapsulates Netmiko's most common functionalities:
 
-**Métodos principales:**
+**Main Methods:**
 
-- `connect(device_params)`: Establece conexión SSH con el dispositivo
-- `enable_mode(connection)`: Entra en modo privilegiado
-- `config_mode(connection)`: Entra en modo de configuración global
-- `get_prompt(connection)`: Obtiene el prompt actual del dispositivo
-- `send_command(connection, command, expect_string, use_textfsm)`: Envía comandos al dispositivo
-- `connection_status(connection)`: Verifica el estado de la conexión
-- `parse_running_config(config_output)`: Parsea la configuración usando CiscoConfParse
-- `disconnect(connection)`: Cierra la conexión
+- `connect(device_params)`: Establishes SSH connection to the device
+- `enable_mode(connection)`: Enters privileged mode
+- `config_mode(connection)`: Enters global configuration mode
+- `get_prompt(connection)`: Gets the device's current prompt
+- `send_command(connection, command, expect_string, use_textfsm)`: Sends commands to the device
+- `connection_status(connection)`: Verifies the connection status
+- `parse_running_config(config_output)`: Parses configuration using CiscoConfParse
+- `disconnect(connection)`: Closes the connection
 
-**Características:**
+**Features:**
 
-- Manejo robusto de excepciones
-- Soporte para TextFSM
-- Parseo automático de configuraciones con CiscoConfParse
-- Extracción de interfaces y direcciones IP
+- Robust exception handling
+- TextFSM support
+- Automatic configuration parsing with CiscoConfParse
+- Interface and IP address extraction
 
-### 2. `netmiko_eje1.py` - Comandos Básicos
+### 2. `netmiko_eje1.py` - Basic Commands
 
-**Objetivo**: Demostrar el uso básico de Netmiko para conectarse a un dispositivo Cisco y ejecutar comandos.
+**Objective**: Demonstrate basic Netmiko usage for connecting to a Cisco device and executing commands.
 
-**Conceptos cubiertos:**
+**Concepts covered:**
 
-- Establecimiento de conexión SSH
-- Verificación del estado de la conexión con `is_alive()`
-- Navegación entre modos (usuario → privilegiado → configuración)
-- Obtención y análisis del prompt con `find_prompt()`
-- Envío de comandos con `send_command()`
-- Uso del parámetro `expect_string` para control de salida
-- Cierre correcto de la conexión
+- Establishing SSH connection
+- Verifying connection status with `is_alive()`
+- Navigating between modes (user → privileged → configuration)
+- Getting and analyzing the prompt with `find_prompt()`
+- Sending commands with `send_command()`
+- Using the `expect_string` parameter for output control
+- Properly closing the connection
 
-**Comandos ejecutados:**
+**Commands executed:**
 
 - `show ip interface brief`
 
-### 3. `netmiko_eje2.py` - Uso de TextFSM
+### 3. `netmiko_eje2.py` - TextFSM Usage
 
-**Objetivo**: Demostrar el parseo automático de salidas de comandos usando TextFSM.
+**Objective**: Demonstrate automatic parsing of command outputs using TextFSM.
 
-**Conceptos cubiertos:**
+**Concepts covered:**
 
-- Uso del parámetro `use_textfsm=True` para parseo automático
-- Procesamiento de salidas estructuradas (listas de diccionarios)
-- Extracción de información específica (versión de IOS)
-- Validación del tipo de datos retornados
+- Using the `use_textfsm=True` parameter for automatic parsing
+- Processing structured outputs (lists of dictionaries)
+- Extracting specific information (IOS version)
+- Validating returned data types
 
-**Comandos ejecutados:**
+**Commands executed:**
 
-- `show version` (con parseo TextFSM)
+- `show version` (with TextFSM parsing)
 
-**Ventajas de TextFSM:**
+**TextFSM advantages:**
 
-- Convierte salidas de texto plano en datos estructurados
-- Facilita la extracción de información específica
-- Permite procesamiento programático de datos
+- Converts plain text outputs to structured data
+- Facilitates extraction of specific information
+- Enables programmatic data processing
 
-### 4. `netmiko_eje3.py` - Optimización de Rendimiento
+### 4. `netmiko_eje3.py` - Performance Optimization
 
-**Objetivo**: Demostrar el uso de parámetros de optimización para mejorar el rendimiento de las conexiones.
+**Objective**: Demonstrate the use of optimization parameters to improve connection performance.
 
-**Conceptos cubiertos:**
+**Concepts covered:**
 
-- Parámetro `global_delay_factor`: Ajusta los tiempos de espera globalmente
-  - Valores bajos (0.1): Mayor velocidad, útil con conexiones estables
-  - Valores altos (1.5): Mayor estabilidad, útil con conexiones lentas
-- Alternativa `fast_cli=True` para conexiones rápidas
-- Iteración sobre múltiples dispositivos con diferentes configuraciones
-- Comparación de rendimiento
+- `global_delay_factor` parameter: Adjusts wait times globally
+  - Low values (0.1): Higher speed, useful with stable connections
+  - High values (1.5): Greater stability, useful with slow connections
+- Alternative `fast_cli=True` for fast connections
+- Iteration over multiple devices with different configurations
+- Performance comparison
 
-**Comandos ejecutados:**
+**Commands executed:**
 
-- `show version` (con diferentes configuraciones de delay)
+- `show version` (with different delay configurations)
 
-**Mejores prácticas:**
+**Best practices:**
 
-- Usar `global_delay_factor=0.1` o `fast_cli=True` para laboratorios
-- Usar valores más altos en entornos de producción o conexiones inestables
+- Use `global_delay_factor=0.1` or `fast_cli=True` for labs
+- Use higher values in production environments or unstable connections
 
 ### 5. `netmiko_eje4.py` - CiscoConfParse
 
-**Objetivo**: Demostrar el parseo avanzado de configuraciones usando CiscoConfParse.
+**Objective**: Demonstrate advanced configuration parsing using CiscoConfParse.
 
-**Conceptos cubiertos:**
+**Concepts covered:**
 
-- Obtención de `running-config`
-- Conversión de salida a lista de líneas con `splitlines()`
-- Creación de objeto `CiscoConfParse`
-- Búsqueda de objetos de configuración con expresiones regulares
-- Búsqueda de objetos hijos (child objects)
-- Dos métodos de búsqueda:
-  1. `re_search_children()`: Busca hijos dentro de un objeto padre
-  2. `find_child_objects()`: Busca relaciones padre-hijo específicas
+- Obtaining `running-config`
+- Converting output to line list with `splitlines()`
+- Creating `CiscoConfParse` object
+- Searching for configuration objects with regular expressions
+- Searching for child objects
+- Two search methods:
+  1. `re_search_children()`: Searches for children within a parent object
+  2. `find_child_objects()`: Searches for specific parent-child relationships
 
-**Comandos ejecutados:**
+**Commands executed:**
 
 - `show running-config`
 
-**Análisis realizado:**
+**Analysis performed:**
 
-- Extracción de todas las interfaces
-- Identificación de direcciones IP asignadas a cada interfaz
-- Detección de interfaces sin IP
+- Extraction of all interfaces
+- Identification of IP addresses assigned to each interface
+- Detection of interfaces without IP
 
-### 6. `integrador1.py` - Implementación con Clase
+### 6. `integrador1.py` - Class-based Implementation
 
-**Objetivo**: Demostrar el uso de la clase `NetmikoInicial` para una implementación limpia y reutilizable.
+**Objective**: Demonstrate the use of the `NetmikoInicial` class for a clean and reusable implementation.
 
-**Conceptos cubiertos:**
+**Concepts covered:**
 
-- Instanciación de la clase `NetmikoInicial`
-- Uso de métodos encapsulados
-- Validación de estado de conexión
-- Procesamiento de comandos con y sin TextFSM
-- Parseo de configuración con el método de la clase
-- Salida formateada en JSON
+- Instantiation of the `NetmikoInicial` class
+- Using encapsulated methods
+- Connection status validation
+- Command processing with and without TextFSM
+- Configuration parsing with class method
+- JSON-formatted output
 
-**Funcionalidad:**
+**Functionality:**
 
-1. Establece conexión con el dispositivo
-2. Valida el estado de la conexión
-3. Entra en modo privilegiado
-4. Ejecuta comandos con parseo TextFSM
-5. Obtiene y parsea la configuración
-6. Cierra la conexión limpiamente
+1. Establishes connection to the device
+2. Validates connection status
+3. Enters privileged mode
+4. Executes commands with TextFSM parsing
+5. Gets and parses the configuration
+6. Closes the connection cleanly
 
-**Ventajas del enfoque orientado a objetos:**
+**Advantages of object-oriented approach:**
 
-- Código más organizado y mantenible
-- Reutilización de lógica común
-- Manejo centralizado de errores
-- Fácil extensión de funcionalidades
+- More organized and maintainable code
+- Reuse of common logic
+- Centralized error handling
+- Easy extension of functionalities
 
-## Configuración de Dispositivos
+## Device Configuration
 
-Antes de ejecutar los scripts, debes configurar los parámetros de conexión en cada archivo:
+Before running the scripts, you must configure the connection parameters in each file:
 
 ```python
 device = {
     'device_type': 'cisco_ios',
-    'host': 'X.X.X.X',        # Dirección IP del dispositivo
-    'username': 'xxxx',       # Usuario SSH
-    'password': 'xxxx',       # Contraseña
-    'ssh_config_file': '~/.ssh/config'  # Archivo de configuración SSH (opcional)
+    'host': 'X.X.X.X',        # Device IP address
+    'username': 'xxxx',       # SSH username
+    'password': 'xxxx',       # Password
+    'ssh_config_file': '~/.ssh/config'  # SSH configuration file (optional)
 }
 ```
 
-### Parámetros Adicionales Disponibles
+### Additional Available Parameters
 
-- `global_delay_factor`: Factor de multiplicación para los delays (default: 1)
-- `fast_cli`: Modo rápido para conexiones estables (boolean)
-- `timeout`: Timeout para la conexión inicial (segundos)
-- `secret`: Contraseña para modo enable (si es diferente)
+- `global_delay_factor`: Multiplication factor for delays (default: 1)
+- `fast_cli`: Fast mode for stable connections (boolean)
+- `timeout`: Timeout for initial connection (seconds)
+- `secret`: Password for enable mode (if different)
 
-## Uso
+## Usage
 
-### Ejecutar ejemplos individuales
+### Run individual examples
 
 ```bash
-# Ejemplo 1: Comandos básicos
+# Example 1: Basic commands
 python netmiko_eje1.py
 
-# Ejemplo 2: TextFSM
+# Example 2: TextFSM
 python netmiko_eje2.py
 
-# Ejemplo 3: Optimización
+# Example 3: Optimization
 python netmiko_eje3.py
 
-# Ejemplo 4: CiscoConfParse
+# Example 4: CiscoConfParse
 python netmiko_eje4.py
 
-# Ejemplo integrador con clase
+# Integrator example with class
 python integrador1.py
 ```
 
-### Usar la clase en tus propios scripts
+### Use the class in your own scripts
 
 ```python
 from netmiko_clase import NetmikoInicial
@@ -248,96 +248,96 @@ output = net.send_command(conn, "show version", use_textfsm=True)
 net.disconnect(conn)
 ```
 
-## Funcionalidades Principales
+## Main Functionalities
 
-### 1. Gestión de Conexiones
+### 1. Connection Management
 
-- Conexión SSH automática
-- Verificación de estado
-- Manejo de timeouts y errores de autenticación
-- Cierre seguro de conexiones
+- Automatic SSH connection
+- Status verification
+- Timeout and authentication error handling
+- Safe connection closing
 
-### 2. Navegación de Modos
+### 2. Mode Navigation
 
-- Modo usuario (USER EXEC)
-- Modo privilegiado (PRIVILEGED EXEC)
-- Modo de configuración global (CONFIG)
-- Detección automática del modo actual
+- User mode (USER EXEC)
+- Privileged mode (PRIVILEGED EXEC)
+- Global configuration mode (CONFIG)
+- Automatic current mode detection
 
-### 3. Ejecución de Comandos
+### 3. Command Execution
 
-- Comandos show
-- Soporte para expect_string personalizado
-- Parseo automático con TextFSM
-- Parseo de configuraciones con CiscoConfParse
+- Show commands
+- Custom expect_string support
+- Automatic parsing with TextFSM
+- Configuration parsing with CiscoConfParse
 
-### 4. Análisis de Configuraciones
+### 4. Configuration Analysis
 
-- Extracción de interfaces
-- Identificación de direcciones IP
-- Análisis de relaciones padre-hijo en configuraciones
-- Búsqueda con expresiones regulares
+- Interface extraction
+- IP address identification
+- Parent-child relationship analysis in configurations
+- Search with regular expressions
 
-## Manejo de Errores
+## Error Handling
 
-Todos los scripts implementan manejo de excepciones para:
+All scripts implement exception handling for:
 
-- `NetmikoTimeoutException`: Timeout en la conexión
-- `NetmikoAuthenticationException`: Errores de autenticación
-- `Exception`: Errores genéricos de Netmiko
+- `NetmikoTimeoutException`: Connection timeout
+- `NetmikoAuthenticationException`: Authentication errors
+- `Exception`: Generic Netmiko errors
 
-La clase `NetmikoInicial` proporciona mensajes de error descriptivos para facilitar el debugging.
+The `NetmikoInicial` class provides descriptive error messages to facilitate debugging.
 
-## Mejores Prácticas
+## Best Practices
 
-1. **Seguridad**:
-   - No hardcodear credenciales en el código
-   - Usar variables de entorno o archivos de configuración
-   - Configurar SSH keys cuando sea posible
+1. **Security**:
+   - Don't hardcode credentials in the code
+   - Use environment variables or configuration files
+   - Configure SSH keys when possible
 
-2. **Rendimiento**:
-   - Usar `fast_cli=True` o `global_delay_factor=0.1` en laboratorios
-   - Ajustar timeouts según la latencia de red
-   - Cerrar siempre las conexiones
+2. **Performance**:
+   - Use `fast_cli=True` or `global_delay_factor=0.1` in labs
+   - Adjust timeouts according to network latency
+   - Always close connections
 
-3. **Código**:
-   - Usar la clase `NetmikoInicial` para código reutilizable
-   - Implementar manejo de errores robusto
-   - Validar estados antes de ejecutar comandos
+3. **Code**:
+   - Use the `NetmikoInicial` class for reusable code
+   - Implement robust error handling
+   - Validate states before executing commands
 
-4. **Parseo**:
-   - Usar TextFSM para comandos show estándar
-   - Usar CiscoConfParse para análisis de configuraciones complejas
-   - Validar el tipo de dato retornado antes de procesarlo
+4. **Parsing**:
+   - Use TextFSM for standard show commands
+   - Use CiscoConfParse for complex configuration analysis
+   - Validate the returned data type before processing
 
-## Recursos Adicionales
+## Additional Resources
 
-- [Documentación oficial de Netmiko](https://github.com/ktbyers/netmiko)
-- [Documentación de CiscoConfParse](https://github.com/mpenning/ciscoconfparse)
+- [Official Netmiko Documentation](https://github.com/ktbyers/netmiko)
+- [CiscoConfParse Documentation](https://github.com/mpenning/ciscoconfparse)
 - [TextFSM Templates](https://github.com/networktocode/ntc-templates)
 
 ## Troubleshooting
 
-### Problema: Timeout al conectar
+### Problem: Connection timeout
 
-**Solución**: Verificar conectividad de red y aumentar el parámetro `timeout`
+**Solution**: Verify network connectivity and increase the `timeout` parameter
 
-### Problema: Error de autenticación
+### Problem: Authentication error
 
-**Solución**: Verificar credenciales y que SSH esté habilitado en el dispositivo
+**Solution**: Verify credentials and that SSH is enabled on the device
 
-### Problema: TextFSM no parsea la salida
+### Problem: TextFSM doesn't parse the output
 
-**Solución**: Verificar que exista un template para el comando y versión de IOS
+**Solution**: Verify that a template exists for the command and IOS version
 
-### Problema: CiscoConfParse no encuentra objetos
+### Problem: CiscoConfParse doesn't find objects
 
-**Solución**: Revisar las expresiones regulares y la estructura de la configuración
+**Solution**: Review the regular expressions and the configuration structure
 
-## Licencia
+## License
 
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
 
 ---
 
-**Última actualización**: Diciembre 2025
+**Last updated**: December 2025

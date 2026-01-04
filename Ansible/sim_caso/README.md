@@ -1,178 +1,178 @@
-# Simulacro de Caso de Uso - Ansible Network Automation
+# Use Case Simulation - Ansible Network Automation
 
-**Autor:** Ed Scrimaglia  
-**Versión:** 1.0  
-**Fecha de Creación:** 12 de Diciembre de 2025  
-**Proyecto:** Simulación Caso de Uso integral
-
----
-
-## Descripción General
-
-Este proyecto implementa una solución completa de automatización de infraestructura de red utilizando Ansible. El sistema está diseñado para generar configuraciones de dispositivos Cisco IOS de manera automática, aplicarlas a los equipos de red y generar documentación técnica exhaustiva del proceso.
-
-El proyecto sigue el paradigma de **Infraestructura como Código (IaC)**, donde toda la configuración de red se define en un modelo de datos centralizado y se renderiza mediante templates Jinja2, garantizando consistencia, reproducibilidad y trazabilidad en las operaciones de red.
+**Author:** Ed Scrimaglia  
+**Version:** 1.0  
+**Creation Date:** December 12, 2025  
+**Project:** Comprehensive Use Case Simulation
 
 ---
 
-## Arquitectura de la Infraestructura
+## General Description
 
-### Topología de Red
+This project implements a complete network infrastructure automation solution using Ansible. The system is designed to automatically generate Cisco IOS device configurations, apply them to network equipment, and generate comprehensive technical documentation of the process.
 
-La infraestructura simulada incluye:
-
-- **2 Switches Core (SW-CORE_1, SW-CORE_2)**: Switches de núcleo con routing EIGRP y redundancia VRRP
-- **2 Switches de Acceso (SW-Bld_A, SW-Bld_B)**: Switches de acceso para edificios A y B
-- **1 Switch de Data Center (SW-Data_Center)**: Switch de acceso para el centro de datos
-
-### VLANs Configuradas
-
-- **VLAN 10 - Ingenieria**: Red del departamento de ingeniería (192.168.10.0/24)
-- **VLAN 20 - Produccion**: Red del departamento de producción (192.168.20.0/24)
-- **VLAN 30 - Finanzas**: Red del departamento de finanzas/data center (192.168.30.0/24)
-
-### Características de Alta Disponibilidad
-
-- **VRRP (Virtual Router Redundancy Protocol)**: Implementado en los switches core para gateway redundante
-- **EIGRP (Enhanced Interior Gateway Routing Protocol)**: Protocolo de routing dinámico (AS 10)
-- **Trunk Ports**: Enlaces troncales con modos dinámicos para intercambio de VLANs
+The project follows the **Infrastructure as Code (IaC)** paradigm, where all network configuration is defined in a centralized data model and rendered through Jinja2 templates, ensuring consistency, reproducibility, and traceability in network operations.
 
 ---
 
-## Estructura del Proyecto
+## Infrastructure Architecture
+
+### Network Topology
+
+The simulated infrastructure includes:
+
+- **2 Core Switches (SW-CORE_1, SW-CORE_2)**: Core switches with EIGRP routing and VRRP redundancy
+- **2 Access Switches (SW-Bld_A, SW-Bld_B)**: Access switches for buildings A and B
+- **1 Data Center Switch (SW-Data_Center)**: Access switch for the data center
+
+### Configured VLANs
+
+- **VLAN 10 - Engineering**: Engineering department network (192.168.10.0/24)
+- **VLAN 20 - Production**: Production department network (192.168.20.0/24)
+- **VLAN 30 - Finance**: Finance/data center department network (192.168.30.0/24)
+
+### High Availability Features
+
+- **VRRP (Virtual Router Redundancy Protocol)**: Implemented on core switches for redundant gateway
+- **EIGRP (Enhanced Interior Gateway Routing Protocol)**: Dynamic routing protocol (AS 10)
+- **Trunk Ports**: Trunk links with dynamic modes for VLAN exchange
+
+---
+
+## Project Structure
 
 ```tree
 sim_caso/
-├── pyproject.toml                   # Definición del proyecto y dependencias Python
-├── README.md                        # Este archivo
-├── configs/                         # Configuraciones generadas automáticamente
-│   ├── SW-Bld_A_int_access.cfg      # Config de interfaces de acceso
-│   ├── SW-Bld_A_int_trunk.cfg       # Config de interfaces troncales
-│   ├── SW-Bld_A_vlans.cfg           # Config de VLANs
-│   └── ...                          # (Archivos similares por dispositivo)
-├── documentacion/                   # Documentación técnica del proyecto
-│   ├── Reporte Simulacro...md       # Reporte completo generado
-│   └── modulos/                     # Módulos de documentación por componente
-├── inventario/                      # Inventario de dispositivos Ansible
-│   └── inventario.ini               # Definición de hosts y grupos
-├── jsons/                           # Esquemas de validación
-│   └── json-schema-model.json       # JSON Schema para validar modelo de datos
-├── modelo_datos/                    # Modelo de datos centralizado
-│   └── modelo.yaml                  # Definición completa de la infraestructura
-├── playbooks/                       # Playbooks de Ansible
-│   ├── play_config_devices.yaml     # Aplica configuraciones a dispositivos
-│   ├── play_create_codigo.yaml      # Genera configuraciones desde templates
-│   └── play_create_documentacion.yaml # Genera documentación del proyecto
-├── tasks/                           # Tareas reutilizables
-│   ├── task_check_empty_dir.yaml    # Verifica existencia de archivos
-│   ├── task_timestamp.yaml          # Obtiene timestamp del sistema
-│   └── task_validator.yaml          # Validación de esquemas
-└── templates/                       # Templates Jinja2
-    ├── eigrp_cfg.j2                 # Template para EIGRP
-    ├── inter_access_cfg.j2          # Template para interfaces de acceso
-    ├── inter_svi_cfg.j2             # Template para SVIs (Switched Virtual Interfaces)
-    ├── inter_trunk_cfg.j2           # Template para interfaces troncales
-    ├── vlans_cfg.j2                 # Template para VLANs
-    └── *_doc.j2                     # Templates de documentación
+├── pyproject.toml                   # Project definition and Python dependencies
+├── README.md                        # This file
+├── configs/                         # Automatically generated configurations
+│   ├── SW-Bld_A_int_access.cfg      # Access interface config
+│   ├── SW-Bld_A_int_trunk.cfg       # Trunk interface config
+│   ├── SW-Bld_A_vlans.cfg           # VLANs config
+│   └── ...                          # (Similar files per device)
+├── documentacion/                   # Technical project documentation
+│   ├── Reporte Simulacro...md       # Complete generated report
+│   └── modulos/                     # Documentation modules per component
+├── inventario/                      # Ansible device inventory
+│   └── inventario.ini               # Host and group definitions
+├── jsons/                           # Validation schemas
+│   └── json-schema-model.json       # JSON Schema to validate data model
+├── modelo_datos/                    # Centralized data model
+│   └── modelo.yaml                  # Complete infrastructure definition
+├── playbooks/                       # Ansible playbooks
+│   ├── play_config_devices.yaml     # Apply configurations to devices
+│   ├── play_create_codigo.yaml      # Generate configurations from templates
+│   └── play_create_documentacion.yaml # Generate project documentation
+├── tasks/                           # Reusable tasks
+│   ├── task_check_empty_dir.yaml    # Check file existence
+│   ├── task_timestamp.yaml          # Get system timestamp
+│   └── task_validator.yaml          # Schema validation
+└── templates/                       # Jinja2 templates
+    ├── eigrp_cfg.j2                 # Template for EIGRP
+    ├── inter_access_cfg.j2          # Template for access interfaces
+    ├── inter_svi_cfg.j2             # Template for SVIs (Switched Virtual Interfaces)
+    ├── inter_trunk_cfg.j2           # Template for trunk interfaces
+    ├── vlans_cfg.j2                 # Template for VLANs
+    └── *_doc.j2                     # Documentation templates
 ```
 
 ---
 
-## Componentes Principales
+## Main Components
 
-### 1. Modelo de Datos (`modelo_datos/modelo.yaml`)
+### 1. Data Model (`modelo_datos/modelo.yaml`)
 
-Archivo YAML centralizado que define toda la infraestructura de red:
+Centralized YAML file that defines the entire network infrastructure:
 
-- **Metadatos del proyecto**: Nombre, versión, autor, zona horaria
-- **Grupos de hosts**: Definición de categorías de dispositivos
-- **Especificaciones de infraestructura**: Por cada dispositivo:
-  - Interfaces físicas (trunk/access)
+- **Project metadata**: Name, version, author, timezone
+- **Host groups**: Device category definitions
+- **Infrastructure specifications**: For each device:
+  - Physical interfaces (trunk/access)
   - VLANs
-  - SVIs con direccionamiento IP
-  - Configuración VRRP
-  - Routing EIGRP
+  - SVIs with IP addressing
+  - VRRP configuration
+  - EIGRP routing
 
-**Características destacadas:**
+**Featured characteristics:**
 
-- Uso de **YAML anchors** (`&` y `<<:`) para reutilización de configuraciones comunes
-- Definición declarativa de la infraestructura completa
-- Separación de configuración de la lógica de implementación
+- Use of **YAML anchors** (`&` and `<<:`) for reusing common configurations
+- Declarative definition of complete infrastructure
+- Separation of configuration from implementation logic
 
-### 2. Templates Jinja2 (`templates/`)
+### 2. Jinja2 Templates (`templates/`)
 
-Los templates permiten generar dos tipos de salida:
+Templates allow generating two types of output:
 
-- **Configuraciones (`.cfg`)**: Código Cisco IOS ejecutable
-- **Documentación (`.md`)**: Documentación técnica en Markdown
+- **Configurations (`.cfg`)**: Executable Cisco IOS code
+- **Documentation (`.md`)**: Technical documentation in Markdown
 
-**Templates disponibles:**
+**Available templates:**
 
-- `inter_trunk_cfg.j2`: Configuración de puertos troncales (802.1Q, DTP)
-- `inter_access_cfg.j2`: Configuración de puertos de acceso
-- `vlans_cfg.j2`: Creación y nombramiento de VLANs
-- `inter_svi_cfg.j2`: Configuración de SVIs con VRRP
-- `eigrp_cfg.j2`: Configuración del routing EIGRP
+- `inter_trunk_cfg.j2`: Trunk port configuration (802.1Q, DTP)
+- `inter_access_cfg.j2`: Access port configuration
+- `vlans_cfg.j2`: VLAN creation and naming
+- `inter_svi_cfg.j2`: SVI configuration with VRRP
+- `eigrp_cfg.j2`: EIGRP routing configuration
 
 ### 3. Playbooks (`playbooks/`)
 
 #### `play_create_codigo.yaml`
 
-Genera todas las configuraciones y documentación desde templates:
+Generates all configurations and documentation from templates:
 
-- Renderiza templates Jinja2 con datos del modelo
-- Crea archivos `.cfg` en directorio `configs/`
-- Crea archivos `.md` en directorio `documentacion/modulos/`
-- Ejecuta en paralelo para diferentes tipos de dispositivos
+- Renders Jinja2 templates with model data
+- Creates `.cfg` files in `configs/` directory
+- Creates `.md` files in `documentacion/modulos/` directory
+- Executes in parallel for different device types
 
 #### `play_config_devices.yaml`
 
-Aplica configuraciones a dispositivos reales/simulados:
+Applies configurations to real/simulated devices:
 
-- Configura interfaces troncales en todos los switches
-- Configura interfaces de acceso en switches access/datacenter
-- Configura VLANs en todos los switches
-- Configura SVIs y VRRP en switches core
-- Guarda cambios automáticamente mediante handlers
+- Configures trunk interfaces on all switches
+- Configures access interfaces on access/datacenter switches
+- Configures VLANs on all switches
+- Configures SVIs and VRRP on core switches
+- Saves changes automatically via handlers
 
 #### `play_create_documentacion.yaml`
 
-Ensambla documentación técnica completa:
+Assembles complete technical documentation:
 
-- Genera título del reporte con timestamp
-- Ensambla módulos de documentación ordenados
-- Crea reporte final con fecha/hora
+- Generates report title with timestamp
+- Assembles ordered documentation modules
+- Creates final report with date/time
 
-### 4. Inventario (`inventario/inventario.ini`)
+### 4. Inventory (`inventario/inventario.ini`)
 
-Define hosts y credenciales:
+Defines hosts and credentials:
 
-- **Grupos de dispositivos**: cisco_ios, cisco_ios_core, cisco_ios_datacenter
-- **Subgrupos**: cisco_ios_access_bsas, cisco_ios_access_cba
-- **Variables de conexión**: Credenciales, método de elevación, network_os
-- **Direcciones IP de gestión**: Rango 10.2.0.101-105
+- **Device groups**: cisco_ios, cisco_ios_core, cisco_ios_datacenter
+- **Subgroups**: cisco_ios_access_bsas, cisco_ios_access_cba
+- **Connection variables**: Credentials, privilege escalation method, network_os
+- **Management IP addresses**: Range 10.2.0.101-105
 
-### 5. Tareas Reutilizables (`tasks/`)
+### 5. Reusable Tasks (`tasks/`)
 
-- **`task_timestamp.yaml`**: Obtiene fecha/hora UTC y local con zona horaria configurable
-- **`task_check_empty_dir.yaml`**: Verifica existencia de archivos para ensamblaje
-- **`task_validator.yaml`**: Valida modelo de datos contra JSON Schema
+- **`task_timestamp.yaml`**: Gets UTC and local date/time with configurable timezone
+- **`task_check_empty_dir.yaml`**: Verifies file existence for assembly
+- **`task_validator.yaml`**: Validates data model against JSON Schema
 
 ### 6. JSON Schema (`jsons/json-schema-model.json`)
 
-Esquema de validación que define:
+Validation schema that defines:
 
-- Estructura obligatoria del modelo de datos
-- Tipos de datos permitidos
-- Propiedades requeridas vs opcionales
-- Validaciones de formato
-- el modelo de validación debe ser revisado y ajustado si fuese necesario
+- Mandatory data model structure
+- Allowed data types
+- Required vs optional properties
+- Format validations
+- The validation model should be reviewed and adjusted if necessary
 
 ---
 
-## Uso del Proyecto
+## Project Usage
 
-### Requisitos Previos
+### Prerequisites
 
 ```bash
 # Python >= 3.12
@@ -180,54 +180,54 @@ Esquema de validación que define:
 # ansible-pylibssh >= 1.3.0
 ```
 
-### Instalación
+### Installation
 
 ```bash
-# Instalar dependencias con uv
+# Install dependencies with uv
 uv sync
 ```
 
-### Flujo de Trabajo Típico
+### Typical Workflow
 
-#### 1. Generar Configuraciones
+#### 1. Generate Configurations
 
 ```bash
 cd playbooks
 ansible-playbook -i ../inventario/inventario.ini play_create_codigo.yaml
 ```
 
-Esto generará:
+This will generate:
 
-- Archivos `.cfg` en `configs/`
-- Archivos `.md` en `documentacion/modulos/`
+- `.cfg` files in `configs/`
+- `.md` files in `documentacion/modulos/`
 
-#### 2. Validar Configuraciones
+#### 2. Validate Configurations
 
-Revisar los archivos generados en `configs/` antes de aplicar.
+Review the generated files in `configs/` before applying.
 
-#### 3. Aplicar Configuraciones a Dispositivos
+#### 3. Apply Configurations to Devices
 
 ```bash
 ansible-playbook -i ../inventario/inventario.ini play_config_devices.yaml
 ```
 
-**Nota**: Requiere conectividad con dispositivos reales o simulador.
+**Note**: Requires connectivity to real devices or simulator.
 
-#### 4. Generar Documentación
+#### 4. Generate Documentation
 
 ```bash
 ansible-playbook -i ../inventario/inventario.ini play_create_documentacion.yaml
 ```
 
-Crea un reporte consolidado en `documentacion/` con timestamp.
+Creates a consolidated report in `documentacion/` with timestamp.
 
 ---
 
-## Configuración
+## Configuration
 
-### Modificar la Infraestructura
+### Modify the Infrastructure
 
-Editar `modelo_datos/modelo.yaml`:
+Edit `modelo_datos/modelo.yaml`:
 
 ```yaml
 devices:
@@ -246,110 +246,110 @@ devices:
         name: "Ingenieria"
 ```
 
-### Actualizar Inventario
+### Update Inventory
 
-Editar `inventario/inventario.ini`:
+Edit `inventario/inventario.ini`:
 
 ```ini
 [cisco_ios_nuevo_grupo]
 SW-Nuevo ansible_host=10.2.0.10X
 ```
 
-### Crear Nuevos Templates
+### Create New Templates
 
-1. Crear archivo `.j2` en `templates/`
-2. Usar sintaxis Jinja2 con acceso a variables del modelo
-3. Referenciar en playbooks con bucle para generar cfg y doc
-
----
-
-## Características Técnicas
-
-### Gestión de Configuración
-
-- **Idempotencia**: Los playbooks pueden ejecutarse múltiples veces sin efectos adversos
-- **Handlers**: Guardan configuración solo si hay cambios
-- **Templates modulares**: Cada aspecto de configuración es independiente
-
-### Validación de Datos
-
-- JSON Schema para validación estructural
-- Separación de datos y lógica (modelo YAML vs templates)
-
-### Generación de Documentación
-
-- Documentación como código
-- Sincronización automática entre configuración y documentación
-- Reportes con timestamps únicos
-
-### Conectividad
-
-- Uso de `network_cli` connection plugin
-- Soporte para elevación de privilegios (enable mode)
-- Configuración de credenciales centralizada
+1. Create `.j2` file in `templates/`
+2. Use Jinja2 syntax with access to model variables
+3. Reference in playbooks with loop to generate cfg and doc
 
 ---
 
-## Casos de Uso
+## Technical Features
 
-1. **Provisioning inicial**: Configurar múltiples switches desde cero
-2. **Cambios masivos**: Modificar VLANs en toda la infraestructura
-3. **Auditoría**: Generar documentación actualizada del estado de red
-4. **Disaster Recovery**: Restaurar configuraciones desde modelo de datos
-5. **Entornos de desarrollo**: Replicar configuraciones en lab/simuladores
+### Configuration Management
 
----
+- **Idempotency**: Playbooks can be executed multiple times without adverse effects
+- **Handlers**: Save configuration only if there are changes
+- **Modular templates**: Each configuration aspect is independent
 
-## Outputs Generados
+### Data Validation
 
-### Archivos de Configuración (`.cfg`)
+- JSON Schema for structural validation
+- Separation of data and logic (YAML model vs templates)
 
-- Sintaxis Cisco IOS nativa
-- Listos para copy-paste o `ios_config`
-- Separados por función (vlans, trunk, access, svi)
+### Documentation Generation
 
-### Documentación (`.md`)
+- Documentation as code
+- Automatic synchronization between configuration and documentation
+- Reports with unique timestamps
 
-- Formato Markdown legible
-- Incluye metadatos y timestamps
-- Estructura modular ensamblable
+### Connectivity
 
-### Reportes Consolidados
-
-- Documento único con toda la configuración
-- Nomenclatura con fecha/hora: `Reporte Simulacro de Caso de Uso Ansible 2025-12-12_05:05:56.md`
+- Use of `network_cli` connection plugin
+- Support for privilege escalation (enable mode)
+- Centralized credential configuration
 
 ---
 
-## Mantenimiento y Extensión
+## Use Cases
 
-### Agregar Nuevo Tipo de Configuración
-
-1. Crear template en `templates/` (ej: `ospf_cfg.j2`)
-2. Agregar datos al modelo YAML
-3. Crear play en playbook para renderizar template
-4. Actualizar JSON Schema si es necesario
-
-### Soportar Otros Vendors
-
-1. Crear templates específicos del vendor
-2. Ajustar variables en inventario (`ansible_network_os`)
-3. Modificar playbooks para usar módulos apropiados
+1. **Initial provisioning**: Configure multiple switches from scratch
+2. **Massive changes**: Modify VLANs across entire infrastructure
+3. **Audit**: Generate updated network state documentation
+4. **Disaster Recovery**: Restore configurations from data model
+5. **Development environments**: Replicate configurations in lab/simulators
 
 ---
 
-## Consideraciones de Seguridad
+## Generated Outputs
 
-- **Credenciales**: Usar Ansible Vault para cifrar passwords
-- **Control de versiones**: No commitear credenciales en Git
-- **Acceso limitado**: Restringir permisos de ejecución de playbooks
-- **Backups**: Realizar respaldo antes de aplicar cambios masivos
+### Configuration Files (`.cfg`)
+
+- Native Cisco IOS syntax
+- Ready for copy-paste or `ios_config`
+- Separated by function (vlans, trunk, access, svi)
+
+### Documentation (`.md`)
+
+- Readable Markdown format
+- Includes metadata and timestamps
+- Assemblable modular structure
+
+### Consolidated Reports
+
+- Single document with all configuration
+- Date/time nomenclature: `Reporte Simulacro de Caso de Uso Ansible 2025-12-12_05:05:56.md`
 
 ---
 
-## Referencias
+## Maintenance and Extension
 
-- [Documentación Ansible](https://docs.ansible.com/)
+### Add New Configuration Type
+
+1. Create template in `templates/` (e.g.: `ospf_cfg.j2`)
+2. Add data to YAML model
+3. Create play in playbook to render template
+4. Update JSON Schema if necessary
+
+### Support Other Vendors
+
+1. Create vendor-specific templates
+2. Adjust variables in inventory (`ansible_network_os`)
+3. Modify playbooks to use appropriate modules
+
+---
+
+## Security Considerations
+
+- **Credentials**: Use Ansible Vault to encrypt passwords
+- **Version control**: Do not commit credentials to Git
+- **Limited access**: Restrict playbook execution permissions
+- **Backups**: Perform backup before applying massive changes
+
+---
+
+## References
+
+- [Ansible Documentation](https://docs.ansible.com/)
 - [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)
 - [Jinja2 Templates](https://jinja.palletsprojects.com/)
 - [VRRP Protocol RFC 5798](https://tools.ietf.org/html/rfc5798)
@@ -357,10 +357,10 @@ SW-Nuevo ansible_host=10.2.0.10X
 
 ---
 
-## Licencia
+## License
 
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
 
 ---
 
-**Última actualización**: Diciembre 2025  
+**Last updated**: December 2025  

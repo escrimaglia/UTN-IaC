@@ -1,92 +1,92 @@
-# Modelado de Datos para Automatización de Red
+# Data Modeling for Network Automation
 
-Este proyecto demuestra técnicas de modelado de datos YAML y validación con JSON Schema para automatización de infraestructura de red.
+This project demonstrates YAML data modeling techniques and JSON Schema validation for network infrastructure automation.
 
-## Descripción
+## Description
 
-El proyecto incluye ejemplos de:
+The project includes examples of:
 
-- Modelado de datos de infraestructura de red en formato YAML
-- Validación de datos usando JSON Schema
-- Reutilización de código en YAML usando anchors y aliases
-- Scripts Python para validación automatizada
+- Network infrastructure data modeling in YAML format
+- Data validation using JSON Schema
+- Code reuse in YAML using anchors and aliases
+- Python scripts for automated validation
 
-## Estructura del Proyecto
+## Project Structure
 
+```tree
+├── main_schema.py           # Main validation script
+├── main_reutilizacion.py   # Script to demonstrate YAML reuse
+├── modelo_datos.yaml       # Main infrastructure model
+├── modelo_schema.json      # Main validation schema
+├── ejemplo1_datos.yaml     # Basic metadata example
+├── ejemplo1_schema.json    # Schema for basic example
+├── ejemplo2_datos.yaml     # Network devices example
+├── ejemplo2_schema.json    # Schema for devices
+├── reutilizacion_a.yaml    # Merge keys example (<<)
+├── reutilizacion_b.yaml    # Anchors and aliases example
+├── pyproject.toml          # Project configuration
+└── .python-version         # Required Python version
 ```
-├── main_schema.py           # Script principal de validación
-├── main_reutilizacion.py   # Script para demostrar reutilización YAML
-├── modelo_datos.yaml       # Modelo principal de infraestructura
-├── modelo_schema.json      # Schema de validación principal
-├── ejemplo1_datos.yaml     # Ejemplo básico de metadatos
-├── ejemplo1_schema.json    # Schema para ejemplo básico
-├── ejemplo2_datos.yaml     # Ejemplo de dispositivos de red
-├── ejemplo2_schema.json    # Schema para dispositivos
-├── reutilizacion_a.yaml    # Ejemplo de merge keys (<<)
-├── reutilizacion_b.yaml    # Ejemplo de anchors y aliases
-├── pyproject.toml          # Configuración del proyecto
-└── .python-version         # Versión de Python requerida
-```
 
-## Requisitos
+## Requirements
 
 - Python 3.12+
-- Dependencias (definidas en [pyproject.toml](pyproject.toml)):
+- Dependencies (defined in [pyproject.toml](pyproject.toml)):
   - `jsonschema>=4.25.1`
   - `pyyaml>=6.0.3`
 
-## Instalación
+## Installation
 
 ```bash
-# Instalar dependencias
+# Install dependencies
 uv add jsonschema pyyaml
 ```
 
-## Uso
+## Usage
 
-### Validación de Modelos de Datos
+### Data Model Validation
 
-Use el script [`main_schema.py`](main_schema.py) para validar modelos YAML contra esquemas JSON:
+Use the [`main_schema.py`](main_schema.py) script to validate YAML models against JSON schemas:
 
 ```bash
-# Validar modelo principal
+# Validate main model
 python main_schema.py modelo_datos.yaml modelo_schema.json
 
-# Validar ejemplos
+# Validate examples
 python main_schema.py ejemplo1_datos.yaml ejemplo1_schema.json
 python main_schema.py ejemplo2_datos.yaml ejemplo2_schema.json
 ```
 
-### Explorar Reutilización de Código YAML
+### Explore YAML Code Reuse
 
-Use el script [`main_reutilizacion.py`](main_reutilizacion.py) para ver ejemplos de reutilización:
+Use the [`main_reutilizacion.py`](main_reutilizacion.py) script to see reuse examples:
 
 ```bash
-# Ejemplo de merge keys
+# Merge keys example
 python main_reutilizacion.py reutilizacion_a.yaml
 
-# Ejemplo de anchors y aliases
+# Anchors and aliases example
 python main_reutilizacion.py reutilizacion_b.yaml
 ```
 
-## Ejemplos de Modelado
+## Modeling Examples
 
-### 1. Modelo Principal ([modelo_datos.yaml](modelo_datos.yaml))
+### 1. Main Model ([modelo_datos.yaml](modelo_datos.yaml))
 
-Modelo completo de infraestructura de red que incluye:
+Complete network infrastructure model that includes:
 
-- **Metadatos**: Información del proyecto, versión, autor
-- **Dispositivos**: Switches con configuración de management y conectividad
-- **Interfaces**: Configuración detallada de puertos (access/trunk)
-- **VLANs**: Definición de redes virtuales
-- **Especificaciones de configuración**: Templates y archivos de configuración
+- **Metadata**: Project information, version, author
+- **Devices**: Switches with management and connectivity configuration
+- **Interfaces**: Detailed port configuration (access/trunk)
+- **VLANs**: Virtual network definitions
+- **Configuration specifications**: Templates and configuration files
 
-### 2. Ejemplos Básicos
+### 2. Basic Examples
 
-- **[ejemplo1_datos.yaml](ejemplo1_datos.yaml)**: Modelo simple con metadatos básicos
-- **[ejemplo2_datos.yaml](ejemplo2_datos.yaml)**: Modelo de dispositivos con IPs IPv4/IPv6
+- **[ejemplo1_datos.yaml](ejemplo1_datos.yaml)**: Simple model with basic metadata
+- **[ejemplo2_datos.yaml](ejemplo2_datos.yaml)**: Device model with IPv4/IPv6 IPs
 
-### 3. Reutilización de Código YAML
+### 3. YAML Code Reuse
 
 #### Merge Keys ([reutilizacion_a.yaml](reutilizacion_a.yaml))
 
@@ -101,76 +101,76 @@ database1:
   host: db1.example.com
 ```
 
-#### Anchors y Aliases ([reutilizacion_b.yaml](reutilizacion_b.yaml))
+#### Anchors and Aliases ([reutilizacion_b.yaml](reutilizacion_b.yaml))
 
 ```yaml
 commands: &base_commands
-  - Iniciando
-  - Ejecutando tarea principal
-  - Finalizado
+  - Starting
+  - Executing main task
+  - Finished
 
 job1:
   steps: *base_commands
 ```
 
-## Esquemas de Validación
+## Validation Schemas
 
-Los archivos JSON Schema definen las reglas de validación:
+JSON Schema files define validation rules:
 
-- **[modelo_schema.json](modelo_schema.json)**: Schema completo para infraestructura
-- **[ejemplo1_schema.json](ejemplo1_schema.json)**: Schema básico para metadatos
-- **[ejemplo2_schema.json](ejemplo2_schema.json)**: Schema para dispositivos de red
+- **[modelo_schema.json](modelo_schema.json)**: Complete schema for infrastructure
+- **[ejemplo1_schema.json](ejemplo1_schema.json)**: Basic schema for metadata
+- **[ejemplo2_schema.json](ejemplo2_schema.json)**: Schema for network devices
 
-### Características de Validación
+### Validation Features
 
-- Tipos de datos (string, integer, boolean, array, object)
-- Formatos específicos (date, ipv4, ipv6)
-- Restricciones de longitud y rango
-- Campos requeridos y opcionales
-- Validación de enums y patrones
+- Data types (string, integer, boolean, array, object)
+- Specific formats (date, ipv4, ipv6)
+- Length and range constraints
+- Required and optional fields
+- Enum and pattern validation
 
-## Funcionalidades
+## Functionalities
 
-### Script de Validación ([main_schema.py](main_schema.py))
+### Validation Script ([main_schema.py](main_schema.py))
 
-- Carga y valida archivos YAML contra esquemas JSON
-- Proporciona mensajes de error detallados
-- Soporte para validación de formatos (IP, fechas)
-- Manejo de errores con paths específicos
+- Loads and validates YAML files against JSON schemas
+- Provides detailed error messages
+- Format validation support (IP, dates)
+- Error handling with specific paths
 
-### Script de Reutilización ([main_reutilizacion.py](main_reutilizacion.py))
+### Reuse Script ([main_reutilizacion.py](main_reutilizacion.py))
 
-- Demuestra técnicas de reutilización en YAML
-- Carga y muestra la estructura resultante
-- Útil para entender anchors, aliases y merge keys
+- Demonstrates YAML reuse techniques
+- Loads and displays resulting structure
+- Useful for understanding anchors, aliases, and merge keys
 
-## Casos de Uso
+## Use Cases
 
-Este proyecto es útil para:
+This project is useful for:
 
-1. **Automatización de Red**: Modelar configuraciones de switches y routers
-2. **Gestión de Infraestructura**: Definir topologías de red de forma estructurada
-3. **Validación de Configuraciones**: Asegurar consistencia en modelos de datos
-4. **Documentación de Red**: Mantener inventarios estructurados de dispositivos
-5. **Plantillas de Configuración**: Generar configuraciones a partir de modelos
+1. **Network Automation**: Model switch and router configurations
+2. **Infrastructure Management**: Define network topologies in structured form
+3. **Configuration Validation**: Ensure consistency in data models
+4. **Network Documentation**: Maintain structured device inventories
+5. **Configuration Templates**: Generate configurations from models
 
-## Beneficios del Modelado
+## Modeling Benefits
 
-- **Consistencia**: Esquemas garantizan estructura uniforme
-- **Validación**: Detección temprana de errores
-- **Reutilización**: Evita duplicación de código
-- **Mantenibilidad**: Estructura clara y documentada
-- **Escalabilidad**: Fácil adición de nuevos dispositivos
+- **Consistency**: Schemas guarantee uniform structure
+- **Validation**: Early error detection
+- **Reusability**: Avoids code duplication
+- **Maintainability**: Clear and documented structure
+- **Scalability**: Easy addition of new devices
 
-## Contribución
+## Contribution
 
-Para contribuir al proyecto:
+To contribute to the project:
 
-1. Asegúrese de validar todos los modelos antes de commit
-2. Mantenga la documentación actualizada
-3. Siga las convenciones de nomenclatura existentes
-4. Incluya tests para nuevas funcionalidades
+1. Ensure all models are validated before committing
+2. Keep documentation updated
+3. Follow existing naming conventions
+4. Include tests for new functionalities
 
-## Autor
+## Author
 
-Ed Scrimaglia - Curso de Network Automation, UTN Academia
+Ed Scrimaglia - Network Automation Course, UTN Academy

@@ -1,207 +1,207 @@
-# Automatización de Redes - UTN-FRC Academia de Cisco
+# Network Automation - UTN-FRC Cisco Academy
 
-**Autor:** Ed Scrimaglia  
-**Institución:** Universidad Tecnológica Nacional - Facultad Regional Córdoba  
-**Curso:** Network Automation Engineer  
-**Fecha de Creación:** 2 de Diciembre del 2025  
-
----
-
-## Descripción General
-
-Este repositorio contiene el material práctico completo del curso de Automatización de Redes, organizado en módulos progresivos que van desde fundamentos de Python hasta implementaciones empresariales de Infrastructure as Code (IaC) con Ansible y Netmiko.
-
-**Enfoque pedagógico:** Cada módulo incluye ejemplos incrementales, casos de uso reales y simulacros integradores que preparan para escenarios profesionales en gestión y automatización de redes empresariales.
+**Author:** Ed Scrimaglia  
+**Institution:** National Technological University - Córdoba Regional Campus  
+**Course:** Network Automation Engineer  
+**Creation Date:** December 2, 2025  
 
 ---
 
-## Estructura del Proyecto
+## Overview
+
+This repository contains the complete practical material for the Network Automation course, organized in progressive modules ranging from Python fundamentals to enterprise Infrastructure as Code (IaC) implementations with Ansible and Netmiko.
+
+**Pedagogical approach:** Each module includes incremental examples, real-world use cases, and integrative simulations that prepare for professional scenarios in enterprise network management and automation.
+
+---
+
+## Project Structure
 
 ```tree
 Codigo/
-├── Python_Basics/          # Fundamentos de programación Python
-├── json/                   # Manipulación de archivos JSON
-├── yaml/                   # Manipulación de archivos YAML
-├── Modelado/              # Modelado y validación de datos → README.md
-├── Netmiko/               # Automatización con Netmiko
-│   ├── ejemplo1/          # Comandos básicos y TextFSM → README.md
-│   ├── ejemplo2/          # Configuración con templates Jinja2 → README.md
-│   └── sim_caso/          # Simulacro integrador → README.md
-└── Ansible/               # Automatización con Ansible
-    ├── ejemplo1/          # Variables y comandos show → README.md
-    ├── ejemplo2/          # Estructuras de programación → README.md
-    ├── ejemplo3/          # Ansible Vault y templates → README.md
-    └── sim_caso/          # Simulacro empresarial completo → README.md
+├── Python_Basics/         # Python programming fundamentals
+├── json/                  # JSON file manipulation
+├── yaml/                  # YAML file manipulation
+├── Modelado/              # Data modeling and validation → README.md
+├── Netmiko/               # Netmiko automation
+│   ├── ejemplo1/          # Basic commands and TextFSM → README.md
+│   ├── ejemplo2/          # Configuration with Jinja2 templates → README.md
+│   └── sim_caso/          # Integration simulation → README.md
+└── Ansible/               # Ansible automation
+    ├── ejemplo1/          # Variables and show commands → README.md
+    ├── ejemplo2/          # Programming structures → README.md
+    ├── ejemplo3/          # Ansible Vault and templates → README.md
+    └── sim_caso/          # Complete enterprise simulation → README.md
 ```
 
-**Nota:** Los directorios marcados con `→ README.md` contienen documentación detallada en sus respectivos archivos README.
+**Note:** Directories marked with `→ README.md` contain detailed documentation in their respective README files.
 
 ---
 
-## Módulos del Curso
+## Course Modules
 
 ### 1. Python Basics
 
-**Ubicación:** [`Python Basics/`](Python_Basics/)
+**Location:** [`Python Basics/`](Python_Basics/)
 
-**Objetivo:** Fundamentos de Python para automatización: clases, módulos, estructuras de datos.
+**Objective:** Python fundamentals for automation: classes, modules, data structures.
 
-**Contenido:**
+**Content:**
 
-- Programación orientada a objetos (clases básicas y avanzadas)
-- Operaciones matemáticas y manejo de atributos
-- Gestión de módulos e importaciones
-- Estructuras de datos: diccionarios y listas
+- Object-oriented programming (basic and advanced classes)
+- Mathematical operations and attribute management
+- Module and import management
+- Data structures: dictionaries and lists
 
 **Scripts:** `main.py`, `class_oper_basic_math.py`, `class_oper_advance_math.py`, `class_basic_attr.py`
 
 ---
 
-### 2. Manipulación de Datos (JSON/YAML)
+### 2. Data Manipulation (JSON/YAML)
 
 #### JSON
 
-**Ubicación:** [`json/`](json/)
+**Location:** [`json/`](json/)
 
-**Contenido:**
+**Content:**
 
-- `manage_json.py`: Clase `JsonHandler` para serialización/deserialización JSON
-- `diccionario.py`: Estructuras de datos de ejemplo
-- `devices.json`: Archivo JSON generado
+- `manage_json.py`: `JsonHandler` class for JSON serialization/deserialization
+- `diccionario.py`: Sample data structures
+- `devices.json`: Generated JSON file
 
-**Técnicas:** `json.dump()`, `json.load()`, `json.dumps()`, `json.loads()`
+**Techniques:** `json.dump()`, `json.load()`, `json.dumps()`, `json.loads()`
 
 #### YAML
 
-**Ubicación:** [`yaml/`](yaml/)
+**Location:** [`yaml/`](yaml/)
 
-**Contenido:**
+**Content:**
 
-- `manage_yaml.py`: Clase `YamlHandler` para lectura de YAML
-- `file.yaml`: Ejemplo de archivo YAML
+- `manage_yaml.py`: `YamlHandler` class for YAML reading
+- `file.yaml`: YAML file example
 
-**Ventaja:** Mayor legibilidad, soporte de comentarios, formato estándar en Ansible.
-
----
-
-### 3. Modelado de Datos
-
-**Ubicación:** [`Modelado/`](Modelado/) → **[Ver README completo](Modelado/README.md)**
-
-**Objetivo:** Modelado avanzado de infraestructuras con validación JSON Schema y reutilización YAML.
-
-**Contenido:**
-
-- Modelos de datos de infraestructura YAML
-- Validación con JSON Schema (draft-07)
-- Técnicas de reutilización: anchors (`&`), aliases (`*`), merge keys (`<<:`)
-- Scripts de validación: `main_schema.py`, `main_reutilizacion.py`
-- Ejemplos progresivos con modelos y esquemas
-
-**Casos de uso:** Source of Truth centralizado, validación de configuraciones, input para automatización.
+**Advantage:** Better readability, comment support, standard format in Ansible.
 
 ---
 
-### 4. Automatización con Netmiko
+### 3. Data Modeling
 
-#### Ejemplo 1: Fundamentos
+**Location:** [`Modelado/`](Modelado/) → **[See complete README](Modelado/README.md)**
 
-**Ubicación:** [`Netmiko/ejemplo1/`](Netmiko/ejemplo1/) → **[Ver README completo](Netmiko/ejemplo1/README.md)**
+**Objective:** Advanced infrastructure modeling with JSON Schema validation and YAML reuse.
 
-**Temas:** Conexiones SSH, comandos show, parseo con TextFSM, análisis con CiscoConfParse, optimización de rendimiento, clase reutilizable `NetmikoInicial`.
+**Content:**
 
-**Scripts:** `netmiko_eje1.py` (básicos), `netmiko_eje2.py` (TextFSM), `netmiko_eje3.py` (optimización), `netmiko_eje4.py` (CiscoConfParse), `integrador1.py`
+- YAML infrastructure data models
+- JSON Schema validation (draft-07)
+- Reuse techniques: anchors (`&`), aliases (`*`), merge keys (`<<:`)
+- Validation scripts: `main_schema.py`, `main_reutilizacion.py`
+- Progressive examples with models and schemas
 
-#### Ejemplo 2: Configuración Avanzada
-
-**Ubicación:** [`Netmiko/ejemplo2/`](Netmiko/ejemplo2/) → **[Ver README completo](Netmiko/ejemplo2/README.md)**
-
-**Temas:** Configuración con `send_config_set()` y `send_config_from_file()`, templates Jinja2, comandos multilínea, validación de errores, clase `ConfigurationClass`.
-
-**Scripts:** `netmiko_eje1.py` a `netmiko_eje4.py`, `integrador2.py`, templates en `templates/`
-
-#### Simulacro: Implementación Profesional
-
-**Ubicación:** [`Netmiko/sim_caso/`](Netmiko/sim_caso/) → **[Ver README completo](Netmiko/sim_caso/README.md)**
-
-**Descripción:** Solución end-to-end modular y escalable para configurar múltiples dispositivos.
-
-**Componentes:**
-
-- `main.py`: Orquestador principal
-- `class_device_config.py`: Gestión de conexiones SSH
-- `class_create_configs.py`: Renderizado de templates Jinja2
-- `modelo_datos.yaml`: Source of Truth centralizado
-- Templates para VLANs, interfaces access/trunk
-
-**Flujo:** Leer modelo → Generar configs → Conectar SSH → Aplicar → Validar → Guardar
+**Use cases:** Centralized Source of Truth, configuration validation, automation input.
 
 ---
 
-### 5. Automatización con Ansible
+### 4. Netmiko Automation
 
-#### Ejemplo 1: Variables y Consultas
+#### Example 1: Fundamentals
 
-**Ubicación:** [`Ansible/ejemplo1/`](Ansible/ejemplo1/) → **[Ver README completo](Ansible/ejemplo1/README.md)**
+**Location:** [`Netmiko/ejemplo1/`](Netmiko/ejemplo1/) → **[See complete README](Netmiko/ejemplo1/README.md)**
 
-**Temas:** Inventarios, modelos de datos, validación JSON Schema, manipulación de variables, `hostvars`, filtros Jinja2, comandos show en Cisco IOS.
+**Topics:** SSH connections, show commands, parsing with TextFSM, analysis with CiscoConfParse, performance optimization, reusable `NetmikoInicial` class.
 
-**Componentes:** `inventario.ini`, `modelo_datos.yaml`, `validador_modelo.json`, playbooks 1-3, `host_vars/`, `group_vars/`
+**Scripts:** `netmiko_eje1.py` (basics), `netmiko_eje2.py` (TextFSM), `netmiko_eje3.py` (optimization), `netmiko_eje4.py` (CiscoConfParse), `integrador1.py`
 
-**Colecciones:** `cisco.ios`, `ansible.netcommon`
+#### Example 2: Advanced Configuration
 
-#### Ejemplo 2: Estructuras de Programación
+**Location:** [`Netmiko/ejemplo2/`](Netmiko/ejemplo2/) → **[See complete README](Netmiko/ejemplo2/README.md)**
 
-**Ubicación:** [`Ansible/ejemplo2/`](Ansible/ejemplo2/) → **[Ver README completo](Ansible/ejemplo2/README.md)**
+**Topics:** Configuration with `send_config_set()` and `send_config_from_file()`, Jinja2 templates, multiline commands, error validation, `ConfigurationClass` class.
 
-**Temas:** Condicionales (`when`), loops (`loop`), manejo de errores (`block/rescue/always`), tareas reutilizables (`include_tasks`), variables compartidas.
+**Scripts:** `netmiko_eje1.py` through `netmiko_eje4.py`, `integrador2.py`, templates in `templates/`
 
-**Componentes:** `ansible.cfg`, `tasks/validate.yaml`, `tasks/timestamp.yaml`, playbooks 1-6
+#### Simulation: Professional Implementation
 
-#### Ejemplo 3: Ansible Vault y Templates
+**Location:** [`Netmiko/sim_caso/`](Netmiko/sim_caso/) → **[See complete README](Netmiko/sim_caso/README.md)**
 
-**Ubicación:** [`Ansible/ejemplo3/`](Ansible/ejemplo3/) → **[Ver README completo](Ansible/ejemplo3/README.md)**
+**Description:** Modular and scalable end-to-end solution for configuring multiple devices.
 
-**Temas:** Encriptación de credenciales con Ansible Vault, templates Jinja2, YAML anchors/aliases, generación y aplicación de configuraciones, handlers condicionales.
+**Components:**
 
-**Componentes:** `group_vars/cisco_ios/vault.yaml`, `modelo/modelo.yaml`, `templates/`, `play_create_codigo.yaml`, `play_config_devices.yaml`
+- `main.py`: Main orchestrator
+- `class_device_config.py`: SSH connection management
+- `class_create_configs.py`: Jinja2 template rendering
+- `modelo_datos.yaml`: Centralized Source of Truth
+- Templates for VLANs, access/trunk interfaces
 
-**Workflow:** Generar configs → Revisar → Aplicar a dispositivos (con `--vault-password-file`)
+**Flow:** Read model → Generate configs → Connect SSH → Apply → Validate → Save
 
-#### Simulacro: Solución Empresarial
+---
 
-**Ubicación:** [`Ansible/sim_caso/`](Ansible/sim_caso/) → **[Ver README completo](Ansible/sim_caso/README.md)**
+### 5. Ansible Automation
 
-**Descripción:** Implementación empresarial completa con alta disponibilidad, documentación automatizada.
+#### Example 1: Variables and Queries
 
-**Arquitectura:**
+**Location:** [`Ansible/ejemplo1/`](Ansible/ejemplo1/) → **[See complete README](Ansible/ejemplo1/README.md)**
 
-- 2 Switches Core (EIGRP AS 10, VRRP)
-- 2 Switches Acceso + 1 Datacenter
-- 3 VLANs (Ingeniería, Producción, Finanzas)
+**Topics:** Inventories, data models, JSON Schema validation, variable manipulation, `hostvars`, Jinja2 filters, show commands on Cisco IOS.
 
-**Componentes:**
+**Components:** `inventario.ini`, `modelo_datos.yaml`, `validador_modelo.json`, playbooks 1-3, `host_vars/`, `group_vars/`
 
-- `modelo_datos/modelo.yaml`: Source of Truth completo
-- Templates para configuración (trunk, access, VLANs, SVIs, EIGRP) y documentación
+**Collections:** `cisco.ios`, `ansible.netcommon`
+
+#### Example 2: Programming Structures
+
+**Location:** [`Ansible/ejemplo2/`](Ansible/ejemplo2/) → **[See complete README](Ansible/ejemplo2/README.md)**
+
+**Topics:** Conditionals (`when`), loops (`loop`), error handling (`block/rescue/always`), reusable tasks (`include_tasks`), shared variables.
+
+**Components:** `ansible.cfg`, `tasks/validate.yaml`, `tasks/timestamp.yaml`, playbooks 1-6
+
+#### Example 3: Ansible Vault and Templates
+
+**Location:** [`Ansible/ejemplo3/`](Ansible/ejemplo3/) → **[See complete README](Ansible/ejemplo3/README.md)**
+
+**Topics:** Credential encryption with Ansible Vault, Jinja2 templates, YAML anchors/aliases, configuration generation and application, conditional handlers.
+
+**Components:** `group_vars/cisco_ios/vault.yaml`, `modelo/modelo.yaml`, `templates/`, `play_create_codigo.yaml`, `play_config_devices.yaml`
+
+**Workflow:** Generate configs → Review → Apply to devices (with `--vault-password-file`)
+
+#### Simulation: Enterprise Solution
+
+**Location:** [`Ansible/sim_caso/`](Ansible/sim_caso/) → **[See complete README](Ansible/sim_caso/README.md)**
+
+**Description:** Complete enterprise implementation with high availability, automated documentation.
+
+**Architecture:**
+
+- 2 Core Switches (EIGRP AS 10, VRRP)
+- 2 Access Switches + 1 Datacenter
+- 3 VLANs (Engineering, Production, Finance)
+
+**Components:**
+
+- `modelo_datos/modelo.yaml`: Complete Source of Truth
+- Templates for configuration (trunk, access, VLANs, SVIs, EIGRP) and documentation
 - Playbooks: `play_create_codigo.yaml`, `play_config_devices.yaml`, `play_create_documentacion.yaml`
-- Tasks reutilizables, validación JSON Schema
+- Reusable tasks, JSON Schema validation
 
-**Características:** IaC completo, alta disponibilidad (VRRP, EIGRP), validación automática, documentación técnica autogenerada.
+**Features:** Complete IaC, high availability (VRRP, EIGRP), automatic validation, auto-generated technical documentation.
 
-**Flujo:** Generar configs → Aplicar a dispositivos → Generar documentación
+**Flow:** Generate configs → Apply to devices → Generate documentation
 
 ---
 
-## Requisitos y Configuración
+## Requirements and Configuration
 
-### Requisitos Generales
+### General Requirements
 
-- **Python:** 3.12 o superior
-- **Sistema:** Linux, macOS, Windows (WSL recomendado)
-- **Gestor de paquetes:**  uv (recomendado)
+- **Python:** 3.12 or higher
+- **System:** Linux, macOS, Windows (WSL recommended)
+- **Package manager:** uv (recommended)
 
-### Dependencias por Tecnología
+### Dependencies by Technology
 
 **Netmiko:**
 
@@ -220,82 +220,82 @@ ansible-pylibssh >= 1.3.0
 jsonschema >= 4.25.1
 ```
 
-**Colecciones Ansible:**
+**Ansible Collections:**
 
 ```bash
 ansible-galaxy collection install cisco.ios ansible.netcommon
 ```
 
-**Modelado:**
+**Modeling:**
 
 ```toml
 jsonschema >= 4.25.1
 pyyaml >= 6.0.3
 ```
 
-### Instalación Rápida
+### Quick Installation
 
-**Con uv (recomendado):**
+**With uv (recommended):**
 
 ```bash
-cd Netmiko/ejemplo1  # o cualquier proyecto
+cd Netmiko/ejemplo1  # or any project
 uv sync
 ```
 
 ---
 
-## Guía de Uso
+## Usage Guide
 
-### Ruta de Aprendizaje
+### Learning Path
 
-1. **Python Basics** → Fundamentos
-2. **json/ y yaml/** → Manipulación de datos
-3. **Modelado/** → Validación y Source of Truth
-4. **Netmiko/ejemplo1/** → Conexiones y comandos
-5. **Netmiko/ejemplo2/** → Configuración con templates
-6. **Netmiko/sim_caso/** → Implementación completa
-7. **Ansible/ejemplo1/** → Variables y consultas
-8. **Ansible/ejemplo2/** → Estructuras de programación
-9. **Ansible/ejemplo3/** → Vault y templates
-10. **Ansible/sim_caso/** → Solución empresarial
+1. **Python Basics** → Fundamentals
+2. **json/ and yaml/** → Data manipulation
+3. **Modelado/** → Validation and Source of Truth
+4. **Netmiko/ejemplo1/** → Connections and commands
+5. **Netmiko/ejemplo2/** → Configuration with templates
+6. **Netmiko/sim_caso/** → Complete implementation
+7. **Ansible/ejemplo1/** → Variables and queries
+8. **Ansible/ejemplo2/** → Programming structures
+9. **Ansible/ejemplo3/** → Vault and templates
+10. **Ansible/sim_caso/** → Enterprise solution
 
-### Mejores Prácticas
+### Best Practices
 
-- **Entornos virtuales:** Uno por proyecto, evitar instalaciones globales
-- **Seguridad:** Ansible Vault para credenciales, no versionar `.vault-pass`
-- **Versionamiento:** Commits frecuentes, `.gitignore` apropiado
-- **Testing:** Probar en laboratorio, validar modelos, backups previos
+- **Virtual environments:** One per project, avoid global installations
+- **Security:** Ansible Vault for credentials, don't version `.vault-pass`
+- **Version control:** Frequent commits, appropriate `.gitignore`
+- **Testing:** Test in lab, validate models, backup first
 
 ---
 
-## Recursos Adicionales
+## Additional Resources
 
-**Documentación:**
+**Documentation:**
 
 - [Ansible](https://docs.ansible.com/) | [Netmiko](https://github.com/ktbyers/netmiko) | [Jinja2](https://jinja.palletsprojects.com/) | [JSON Schema](https://json-schema.org/) | [CiscoConfParse](https://ciscoconfparse.readthedocs.io/)
 
-**Herramientas:**
+**Tools:**
 
-- **Editor:** VS Code (extensiones: Python, Ansible, YAML, Jinja2)
-- **Emuladores:** GNS3, EVE-NG, Cisco CML, Containerlab
+- **Editor:** VS Code (extensions: Python, Ansible, YAML, Jinja2)
+- **Emulators:** GNS3, EVE-NG, Cisco CML, Containerlab
 
-**Comunidad:**
+**Community:**
 
 - [Ansible Galaxy](https://galaxy.ansible.com/) | [Network to Code Slack](https://networktocode.slack.com/) | [r/networking](https://www.reddit.com/r/networking/) | [r/ansible](https://www.reddit.com/r/ansible/)
 
 ---
 
-## Notas Importantes
+## Important Notes
 
-- Cada subdirectorio con ejemplos incluye su propio **README.md detallado**
-- Los `pyproject.toml` definen dependencias específicas de cada proyecto
-- Los simulacros integran todos los conceptos del módulo
-- Material diseñado para uso académico y educativo
+- Each subdirectory with examples includes its own **detailed README.md**
+- `pyproject.toml` files define specific dependencies for each project
+- Simulations integrate all module concepts
+- Material designed for academic and educational use
 
-## Licencia
+## License
 
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
 
 ---
 
-**Última actualización**: Diciembre 2025  
+**Last updated**: December 2025  

@@ -1,49 +1,49 @@
-# Proyecto de Automatización de Redes con Ansible
+# Network Automation Project with Ansible
 
-**Autor:** Ed Scrimaglia  
-**Proyecto:** Estructuras de Programación - Ansible  
-**Versión:** 1.0  
-**Fecha de Creación:** 28 de noviembre de 2025
+**Author:** Ed Scrimaglia  
+**Project:** Programming Structures - Ansible  
+**Version:** 1.0  
+**Creation Date:** November 28, 2025
 
-## Descripción General
+## General Description
 
-Este proyecto es una colección de playbooks de Ansible diseñados para automatizar la configuración y gestión de dispositivos de red Cisco IOS. El proyecto demuestra diferentes conceptos y técnicas de Ansible aplicadas a la automatización de redes, incluyendo:
+This project is a collection of Ansible playbooks designed to automate the configuration and management of Cisco IOS network devices. The project demonstrates different Ansible concepts and techniques applied to network automation, including:
 
-- Estructuras condicionales
-- Manejo de variables y hostvars
-- Loops e iteraciones
-- Manejo de errores con block/rescue
-- Validación de modelos de datos con JSON Schema
-- Gestión de configuraciones mediante modelo de datos centralizado
+- Conditional structures
+- Variable and hostvars handling
+- Loops and iterations
+- Error handling with block/rescue
+- Data model validation with JSON Schema
+- Configuration management through centralized data model
 
-## Estructura del Proyecto
+## Project Structure
 
 ```tree
 .
-├── README.md                      # Este archivo
-├── inventario.ini                 # Inventario de dispositivos de red
-├── pyproject.toml                 # Configuración del proyecto Python
+├── README.md                      # This file
+├── inventario.ini                 # Network device inventory
+├── pyproject.toml                 # Python project configuration
 ├── cfg/
-│   └── ansible.cfg               # Configuración de Ansible
+│   └── ansible.cfg               # Ansible configuration
 ├── modelo_datos/
-│   └── modelo_datos.yaml         # Modelo de datos centralizado
+│   └── modelo_datos.yaml         # Centralized data model
 ├── json_files/
-│   └── validador_modelo.json     # Esquema JSON para validación
+│   └── validador_modelo.json     # JSON schema for validation
 ├── tasks/
-│   ├── validate.yaml             # Tarea reutilizable de validación
-│   └── timestamp.yaml            # Tarea para obtener timestamp
+│   ├── validate.yaml             # Reusable validation task
+│   └── timestamp.yaml            # Task to get timestamp
 └── playbooks:
-    ├── playbook1.yaml            # Condicionales básicas
-    ├── playbook2.yaml            # Hostvars y variables compartidas
-    ├── playbook3.yaml            # Loops con modelo de datos
-    ├── playbook4.yaml            # Loops con lista estática
-    ├── playbook5.yaml            # Manejo de errores (block/rescue)
-    └── playbook6.yaml            # Validación con JSON Schema
+    ├── playbook1.yaml            # Basic conditionals
+    ├── playbook2.yaml            # Hostvars and shared variables
+    ├── playbook3.yaml            # Loops with data model
+    ├── playbook4.yaml            # Loops with static list
+    ├── playbook5.yaml            # Error handling (block/rescue)
+    └── playbook6.yaml            # Validation with JSON Schema
 ```
 
-## Configuración del Entorno
+## Environment Configuration
 
-### Archivo de Configuración (`cfg/ansible.cfg`)
+### Configuration File (`cfg/ansible.cfg`)
 
 ```ini
 [defaults]
@@ -58,86 +58,86 @@ ssh_args = -o ControlMaster=auto -o ControlPersist=60s
 pipelining = True
 ```
 
-**Características clave:**
+**Key features:**
 
-- Conexiones persistentes para mejorar el rendimiento
-- Pipelining habilitado para reducir overhead
-- Verificación de host_key deshabilitada para entornos de laboratorio
+- Persistent connections to improve performance
+- Pipelining enabled to reduce overhead
+- Host_key verification disabled for lab environments
 
-### Inventario (`inventario.ini`)
+### Inventory (`inventario.ini`)
 
-El inventario define cuatro grupos de dispositivos Cisco IOS:
+The inventory defines four groups of Cisco IOS devices:
 
-- **cisco_ios_access_bsas**: Switch de acceso Buenos Aires (SW-Bld_A)
-- **cisco_ios_access_cba**: Switch de acceso Córdoba (SW-Bld_B)
-- **cisco_ios_datacenter**: Switch de datacenter (SW-Data_Center)
-- **cisco_ios_core**: Switch core (SW-CORE_1)
-- **cisco_ios**: Grupo padre que incluye todos los switches de acceso y datacenter
+- **cisco_ios_access_bsas**: Buenos Aires access switch (SW-Bld_A)
+- **cisco_ios_access_cba**: Córdoba access switch (SW-Bld_B)
+- **cisco_ios_datacenter**: Datacenter switch (SW-Data_Center)
+- **cisco_ios_core**: Core switch (SW-CORE_1)
+- **cisco_ios**: Parent group that includes all access and datacenter switches
 
-**Credenciales:**
+**Credentials:**
 
-- Usuario: `netsim`
+- User: `netsim`
 - Password: `****`
 - Network OS: `cisco.ios.ios`
-- Método de escalada: `ansible.netcommon.enable`
+- Escalation method: `ansible.netcommon.enable`
 
-## Modelo de Datos
+## Data Model
 
-### Estructura del Modelo (`modelo_datos/modelo_datos.yaml`)
+### Model Structure (`modelo_datos/modelo_datos.yaml`)
 
-El modelo de datos centralizado contiene:
+The centralized data model contains:
 
-#### Metadatos
+#### Metadata
 
 ```yaml
 metadatos:
-  proyecto: "Estructuras de programación de Ansible"
+  proyecto: "Ansible programming structures"
   version: "1.0"
   autor: "Ed Scrimaglia"
   fecha_creacion: "2025-11-28"
   time_zone: "America/Argentina/Buenos_Aires"
 ```
 
-#### Especificación de Infraestructura
+#### Infrastructure Specification
 
-- **hosts_group**: Grupo de hosts objetivo (cisco_ios)
-- **devices**: Lista de dispositivos con:
-  - Hostname y dirección de gestión
-  - Parámetros de conexión
-  - Configuración de interfaces (trunk/access)
-  - VLANs configuradas
-  - Especificaciones de configuración (templates y archivos)
+- **hosts_group**: Target host group (cisco_ios)
+- **devices**: Device list with:
+  - Hostname and management address
+  - Connection parameters
+  - Interface configuration (trunk/access)
+  - Configured VLANs
+  - Configuration specifications (templates and files)
 
-### Validación del Modelo (`json_files/validador_modelo.json`)
+### Model Validation (`json_files/validador_modelo.json`)
 
-Esquema JSON que valida:
+JSON schema that validates:
 
-- **Metadatos:** proyecto, versión, autor, fecha de creación, zona horaria
-- **Infraestructura:**
-  - Direcciones IP (IPv4/IPv6)
-  - Interfaces con modos (access/trunk)
-  - VLANs (rango 1-4094)
-  - Credenciales de conexión
+- **Metadata:** project, version, author, creation date, time zone
+- **Infrastructure:**
+  - IP addresses (IPv4/IPv6)
+  - Interfaces with modes (access/trunk)
+  - VLANs (range 1-4094)
+  - Connection credentials
 
 ## Playbooks
 
-### Playbook 1: Estructuras Condicionales (`playbook1.yaml`)
+### Playbook 1: Conditional Structures (`playbook1.yaml`)
 
-**Propósito:** Demostrar el uso de condicionales básicas en Ansible.
+**Purpose:** Demonstrate the use of basic conditionals in Ansible.
 
-**Características:**
+**Features:**
 
-- Ejecuta comandos solo cuando `ejecuta = true`
-- Valida la versión del modelo de datos (`version == '1.0'`)
-- Obtiene el estado de interfaces IP con `show ip interface brief`
-- Registra la salida y la muestra condicionalmente
+- Executes commands only when `ejecuta = true`
+- Validates data model version (`version == '1.0'`)
+- Gets IP interface status with `show ip interface brief`
+- Registers output and shows it conditionally
 
 **Variables:**
 
-- `ejecuta`: Booleano para controlar la ejecución
-- `device`: Nombre del dispositivo objetivo
+- `ejecuta`: Boolean to control execution
+- `device`: Target device name
 
-**Ejecución:**
+**Execution:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook1.yaml
@@ -145,25 +145,25 @@ ansible-playbook -i inventario.ini playbook1.yaml
 
 ---
 
-### Playbook 2: Hostvars y Variables Compartidas (`playbook2.yaml`)
+### Playbook 2: Hostvars and Shared Variables (`playbook2.yaml`)
 
-**Propósito:** Demostrar el uso de `hostvars` para compartir variables entre hosts.
+**Purpose:** Demonstrate the use of `hostvars` to share variables between hosts.
 
-**Flujo:**
+**Flow:**
 
-1. **Play 1 (localhost):** Define variables desde el modelo de datos
+1. **Play 1 (localhost):** Defines variables from the data model
    - version
    - autor
    - fecha_de_creacion
    - zona_horaria
 
-2. **Play 2 (cisco_ios):** Consume las variables de localhost usando `hostvars['localhost']`
-   - Ejecuta comandos solo si la versión coincide
-   - Muestra la salida de interfaces
+2. **Play 2 (cisco_ios):** Consumes localhost variables using `hostvars['localhost']`
+   - Executes commands only if version matches
+   - Shows interface output
 
-**Concepto clave:** Las variables definidas en un host pueden ser accedidas por otros hosts mediante `hostvars`.
+**Key concept:** Variables defined in one host can be accessed by other hosts through `hostvars`.
 
-**Ejecución:**
+**Execution:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook2.yaml
@@ -171,20 +171,20 @@ ansible-playbook -i inventario.ini playbook2.yaml
 
 ---
 
-### Playbook 3: Loops con Modelo de Datos (`playbook3.yaml`)
+### Playbook 3: Loops with Data Model (`playbook3.yaml`)
 
-**Propósito:** Iterar sobre estructuras complejas del modelo de datos.
+**Purpose:** Iterate over complex structures from the data model.
 
-**Características:**
+**Features:**
 
-- Carga la lista de dispositivos desde el modelo
-- Itera sobre cada dispositivo usando `loop`
-- Muestra las interfaces de cada dispositivo
-- Usa `loop_control` con `label` para simplificar la salida
+- Loads device list from the model
+- Iterates over each device using `loop`
+- Shows interfaces for each device
+- Uses `loop_control` with `label` to simplify output
 
-**Ventaja:** Permite trabajar con datos estructurados y complejos de manera eficiente.
+**Advantage:** Allows working with structured and complex data efficiently.
 
-**Ejecución:**
+**Execution:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook3.yaml
@@ -192,17 +192,17 @@ ansible-playbook -i inventario.ini playbook3.yaml
 
 ---
 
-### Playbook 4: Loops con Lista Estática (`playbook4.yaml`)
+### Playbook 4: Loops with Static List (`playbook4.yaml`)
 
-**Propósito:** Demostrar iteración sobre una lista simple y estática.
+**Purpose:** Demonstrate iteration over a simple and static list.
 
-**Características:**
+**Features:**
 
-- Define una lista de dispositivos directamente en el playbook
-- Itera sobre cada elemento
-- Muestra un mensaje personalizado por cada dispositivo
+- Defines device list directly in the playbook
+- Iterates over each element
+- Shows customized message per device
 
-**Dispositivos en el loop:**
+**Devices in the loop:**
 
 - Router-1
 - SW-Bld_A
@@ -210,7 +210,7 @@ ansible-playbook -i inventario.ini playbook3.yaml
 - SW-Data_Center
 - SW-CORE_1
 
-**Ejecución:**
+**Execution:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook4.yaml
@@ -218,27 +218,27 @@ ansible-playbook -i inventario.ini playbook4.yaml
 
 ---
 
-### Playbook 5: Manejo de Errores (`playbook5.yaml`)
+### Playbook 5: Error Handling (`playbook5.yaml`)
 
-**Propósito:** Implementar manejo robusto de errores con `block/rescue/always`.
+**Purpose:** Implement robust error handling with `block/rescue/always`.
 
-**Estructura:**
+**Structure:**
 
-- **Block:** Intenta ejecutar comandos en los dispositivos
-  - Obtiene interfaces con `show ip interface brief`
-  - Imprime el resultado
+- **Block:** Attempts to execute commands on devices
+  - Gets interfaces with `show ip interface brief`
+  - Prints the result
   
-- **Rescue:** Se ejecuta si hay un error
-  - Muestra mensaje de error de conexión
-  - Sugiere verificar conectividad y credenciales
+- **Rescue:** Executes if there's an error
+  - Shows connection error message
+  - Suggests verifying connectivity and credentials
   
-- **Always:** Se ejecuta siempre
-  - Muestra mensaje de finalización
-  - Útil para limpieza o logging
+- **Always:** Always executes
+  - Shows completion message
+  - Useful for cleanup or logging
 
-**Ventaja:** Garantiza que los errores de conexión no detengan toda la ejecución.
+**Advantage:** Ensures connection errors don't stop the entire execution.
 
-**Ejecución:**
+**Execution:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook5.yaml
@@ -246,76 +246,76 @@ ansible-playbook -i inventario.ini playbook5.yaml
 
 ---
 
-### Playbook 6: Validación con JSON Schema (`playbook6.yaml`)
+### Playbook 6: Validation with JSON Schema (`playbook6.yaml`)
 
-**Propósito:** Validar el modelo de datos contra un esquema JSON antes de usarlo.
+**Purpose:** Validate the data model against a JSON schema before using it.
 
-**Características:**
+**Features:**
 
-- Define rutas al modelo de datos y al esquema
-- Incluye la tarea reutilizable `tasks/validate.yaml`
-- Valida estructura, tipos de datos y restricciones
+- Defines paths to data model and schema
+- Includes reusable task `tasks/validate.yaml`
+- Validates structure, data types, and constraints
 
 **Variables:**
 
-- `modelo_datos_path`: Ruta al archivo YAML del modelo
-- `schema_path`: Ruta al esquema JSON de validación
+- `modelo_datos_path`: Path to the model's YAML file
+- `schema_path`: Path to validation JSON schema
 
-**Proceso de validación:**
+**Validation process:**
 
-1. Carga el modelo de datos YAML
-2. Carga el esquema JSON
-3. Valida usando `ansible.utils.validate` con motor `jsonschema`
-4. Muestra el resultado de la validación
+1. Loads YAML data model
+2. Loads JSON schema
+3. Validates using `ansible.utils.validate` with `jsonschema` engine
+4. Shows validation result
 
-**Ejecución:**
+**Execution:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook6.yaml
 ```
 
-## Tareas Reutilizables
+## Reusable Tasks
 
 ### `tasks/validate.yaml`
 
-Tarea modular para validar modelos de datos contra esquemas JSON.
+Modular task to validate data models against JSON schemas.
 
-**Entrada:**
+**Input:**
 
-- `modelo_datos_path`: Ruta al archivo YAML
-- `schema_path`: Ruta al esquema JSON
+- `modelo_datos_path`: Path to YAML file
+- `schema_path`: Path to JSON schema
 
-**Proceso:**
+**Process:**
 
-1. Lee el archivo YAML y lo convierte a objeto
-2. Lee el esquema JSON
-3. Valida usando el motor `ansible.utils.jsonschema`
-4. Registra el resultado en `validation_result`
+1. Reads YAML file and converts to object
+2. Reads JSON schema
+3. Validates using `ansible.utils.jsonschema` engine
+4. Registers result in `validation_result`
 
-**Ventaja:** Puede ser incluida en múltiples playbooks sin duplicar código.
+**Advantage:** Can be included in multiple playbooks without duplicating code.
 
 ---
 
 ### `tasks/timestamp.yaml`
 
-Obtiene timestamps en diferentes zonas horarias.
+Gets timestamps in different time zones.
 
-**Funcionalidad:**
+**Functionality:**
 
-- Obtiene fecha/hora UTC
-- Obtiene fecha/hora en la zona horaria del modelo
-- Usa variables de entorno (`TZ`)
-- Delega ejecución a localhost
+- Gets UTC date/time
+- Gets date/time in model's time zone
+- Uses environment variables (`TZ`)
+- Delegates execution to localhost
 
-**Variables requeridas:**
+**Required variables:**
 
-- `model.metadatos.time_zone`: Zona horaria del proyecto
+- `model.metadatos.time_zone`: Project time zone
 
-## Guía de Uso
+## Usage Guide
 
-### Prerrequisitos
+### Prerequisites
 
-1. **Colecciones de Ansible:**
+1. **Ansible collections:**
 
    ```bash
    ansible-galaxy collection install cisco.ios
@@ -323,151 +323,151 @@ Obtiene timestamps en diferentes zonas horarias.
    ansible-galaxy collection install ansible.netcommon
    ```
 
-2. **Conectividad de red:**
-   - Acceso SSH a los dispositivos definidos en el inventario
-   - Credenciales correctas configuradas
+2. **Network connectivity:**
+   - SSH access to devices defined in inventory
+   - Correct credentials configured
 
-### Ejecución de Playbooks
+### Executing Playbooks
 
-**Ejecutar un playbook específico:**
+**Run specific playbook:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook1.yaml
 ```
 
-**Ejecutar con verbosidad:**
+**Run with verbosity:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook1.yaml -v
 ```
 
-**Ejecutar en modo check (dry-run):**
+**Run in check mode (dry-run):**
 
 ```bash
 ansible-playbook -i inventario.ini playbook1.yaml --check
 ```
 
-**Ejecutar solo en hosts específicos:**
+**Run only on specific hosts:**
 
 ```bash
 ansible-playbook -i inventario.ini playbook1.yaml --limit SW-Bld_A
 ```
 
-### Validación del Modelo de Datos
+### Data Model Validation
 
-Antes de ejecutar cualquier playbook de configuración, es recomendable validar el modelo:
+Before running any configuration playbook, it's recommended to validate the model:
 
 ```bash
 ansible-playbook -i inventario.ini playbook6.yaml
 ```
 
-## Conceptos de Ansible Demostrados
+## Demonstrated Ansible Concepts
 
-### 1. **Variables y Facts**
+### 1. **Variables and Facts**
 
-- Variables locales (`vars`)
-- Variables desde archivos (`vars_files`)
-- Variables compartidas entre hosts (`hostvars`)
-- Variables de inventario
+- Local variables (`vars`)
+- Variables from files (`vars_files`)
+- Shared variables between hosts (`hostvars`)
+- Inventory variables
 
-### 2. **Estructuras Condicionales**
+### 2. **Conditional Structures**
 
-- Condición simple: `when: ejecuta`
-- Condiciones compuestas: `when: ejecuta and modelo.metadatos.version == '1.0'`
-- Uso de `hostvars` en condiciones
+- Simple condition: `when: ejecuta`
+- Compound conditions: `when: ejecuta and modelo.metadatos.version == '1.0'`
+- Using `hostvars` in conditions
 
-### 3. **Loops e Iteraciones**
+### 3. **Loops and Iterations**
 
-- Loop simple sobre listas estáticas
-- Loop sobre estructuras complejas del modelo
-- Control de salida con `loop_control` y `label`
+- Simple loop over static lists
+- Loop over complex model structures
+- Output control with `loop_control` and `label`
 
-### 4. **Manejo de Errores**
+### 4. **Error Handling**
 
-- Bloques `block/rescue/always`
-- Registro de salidas con `register`
-- Mensajes de error personalizados
+- `block/rescue/always` blocks
+- Output registration with `register`
+- Custom error messages
 
-### 5. **Validación de Datos**
+### 5. **Data Validation**
 
-- Validación con JSON Schema
-- Motor `ansible.utils.jsonschema`
-- Conversión de formatos (`from_yaml`, `from_json`)
+- Validation with JSON Schema
+- `ansible.utils.jsonschema` engine
+- Format conversion (`from_yaml`, `from_json`)
 
-### 6. **Reutilización de Código**
+### 6. **Code Reusability**
 
-- Tareas incluibles con `include_tasks`
-- Separación de lógica en archivos independientes
-- Modelo de datos centralizado
+- Includable tasks with `include_tasks`
+- Separating logic into independent files
+- Centralized data model
 
-### 7. **Módulos de Red**
+### 7. **Network Modules**
 
-- `cisco.ios.ios_command`: Ejecutar comandos en dispositivos Cisco
-- Registro y visualización de salidas
-- Conexión mediante `network_cli`
+- `cisco.ios.ios_command`: Execute commands on Cisco devices
+- Output registration and visualization
+- Connection via `network_cli`
 
-## Mejores Prácticas Implementadas
+## Implemented Best Practices
 
-1. **Separación de datos y lógica:** Modelo de datos centralizado
-2. **Validación de datos:** JSON Schema para garantizar integridad
-3. **Código reutilizable:** Tareas en directorio `tasks/`
-4. **Manejo de errores:** Bloques rescue para robustez
-5. **Documentación:** Comentarios en cada playbook y tarea
-6. **Organización:** Estructura de directorios clara
-7. **Versionado:** Metadatos con versión y autor
+1. **Separation of data and logic:** Centralized data model
+2. **Data validation:** JSON Schema to ensure integrity
+3. **Reusable code:** Tasks in `tasks/` directory
+4. **Error handling:** Rescue blocks for robustness
+5. **Documentation:** Comments in each playbook and task
+6. **Organization:** Clear directory structure
+7. **Versioning:** Metadata with version and author
 
 ## Troubleshooting
 
-### Error de conexión SSH
+### SSH connection error
 
-Si ves errores de conexión, verifica:
+If you see connection errors, verify:
 
 ```bash
-# Probar conectividad
+# Test connectivity
 ping 10.2.0.10X
 
-# Probar SSH manual
+# Test manual SSH
 ssh netsim@10.2.0.10X
 
-# Verificar credenciales en inventario
+# Verify inventory credentials
 ansible-inventory -i inventario.ini --list
 ```
 
-### Error de validación del modelo
+### Model validation error
 
-Si la validación falla:
+If validation fails:
 
-1. Verifica la sintaxis YAML del modelo
-2. Revisa los requisitos del esquema JSON
-3. Ejecuta solo la validación para ver detalles:
+1. Verify YAML syntax of the model
+2. Review JSON schema requirements
+3. Run only validation for details:
 
    ```bash
    ansible-playbook -i inventario.ini playbook6.yaml -v
    ```
 
-### Colecciones faltantes
+### Missing collections
 
-Si Ansible no encuentra módulos:
+If Ansible can't find modules:
 
 ```bash
-# Listar colecciones instaladas
+# List installed collections
 ansible-galaxy collection list
 
-# Instalar colecciones faltantes
+# Install missing collections
 ansible-galaxy collection install cisco.ios ansible.utils ansible.netcommon
 ```
 
-## Referencias
+## References
 
-- [Documentación oficial de Ansible](https://docs.ansible.com/)
+- [Official Ansible Documentation](https://docs.ansible.com/)
 - [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)
 - [Ansible Network Automation](https://docs.ansible.com/ansible/latest/network/index.html)
 - [JSON Schema](https://json-schema.org/)
 
-## Licencia
+## License
 
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
 
 ---
 
-**Última actualización**: Diciembre 2025
+**Last updated**: December 2025

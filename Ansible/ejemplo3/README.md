@@ -1,128 +1,128 @@
-# Automatización de Configuración de redes con Ansible
+# Network Configuration Automation with Ansible
 
-**Autor:** Ed Scrimaglia  
-**Versión:** 1.0  
-**Fecha de Creación:** 12 de Diciembre de 2025  
-**Proyecto:** Ansible Vault example project
+**Author:** Ed Scrimaglia  
+**Version:** 1.0  
+**Creation Date:** December 12, 2025  
+**Project:** Ansible Vault example project
 
-## Descripción del Proyecto
+## Project Description
 
-Este proyecto implementa una solución completa de automatización de red utilizando Ansible para gestionar dispositivos Cisco IOS. El proyecto sigue un enfoque de **Infrastructure as Code (IaC)** y utiliza **Ansible Vault** para el manejo seguro de credenciales.
+This project implements a complete network automation solution using Ansible to manage Cisco IOS devices. The project follows an **Infrastructure as Code (IaC)** approach and uses **Ansible Vault** for secure credential management.
 
-### Características Principales
+### Main Features
 
-- Configuración automatizada de interfaces de acceso en switches Cisco
-- Gestión segura de credenciales con Ansible Vault
-- Generación de configuraciones mediante templates Jinja2
-- Modelo de datos centralizado para toda la infraestructura
+- Automated configuration of access interfaces on Cisco switches
+- Secure credential management with Ansible Vault
+- Configuration generation through Jinja2 templates
+- Centralized data model for the entire infrastructure
 
-## Arquitectura de Red
+## Network Architecture
 
-El proyecto gestiona una infraestructura de red que incluye:
+The project manages a network infrastructure that includes:
 
-### Dispositivos Gestionados
+### Managed Devices
 
-| Dispositivo | IP Management | Grupo | Función |
-|------------|--------------|--------|---------|
-| SW-Bld_A | 10.2.0.10X | cisco_ios_access_bsas | Switch de Acceso - Edificio A |
-| SW-Bld_B | 10.2.0.10X | cisco_ios_access_cba | Switch de Acceso - Edificio B |
-| SW-Data_Center | 10.2.0.10X | cisco_ios_datacenter | Switch Data Center |
-| SW-CORE_1 | 10.2.0.10X | cisco_ios_core | Switch Core Principal |
-| SW-CORE_2 | 10.2.0.10X | cisco_ios_core | Switch Core Secundario |
+| Device | Management IP | Group | Function |
+|--------|---------------|-------|----------|
+| SW-Bld_A | 10.2.0.10X | cisco_ios_access_bsas | Access Switch - Building A |
+| SW-Bld_B | 10.2.0.10X | cisco_ios_access_cba | Access Switch - Building B |
+| SW-Data_Center | 10.2.0.10X | cisco_ios_datacenter | Data Center Switch |
+| SW-CORE_1 | 10.2.0.10X | cisco_ios_core | Main Core Switch |
+| SW-CORE_2 | 10.2.0.10X | cisco_ios_core | Secondary Core Switch |
 
-### VLANs Configuradas
+### Configured VLANs
 
-| VLAN ID | Nombre | Gateway | Uso |
-|---------|--------|---------|-----|
-| 10 | Ingenieria | 192.168.10.254 | Usuarios departamento Ingeniería |
-| 20 | Produccion | 192.168.20.254 | Usuarios departamento Producción |
-| 30 | Finanzas | 192.168.30.254 | Servidores y usuarios Finanzas |
+| VLAN ID | Name | Gateway | Usage |
+|---------|------|---------|-------|
+| 10 | Ingenieria | 192.168.10.254 | Engineering department users |
+| 20 | Produccion | 192.168.20.254 | Production department users |
+| 30 | Finanzas | 192.168.30.254 | Finance servers and users |
 
-## Estructura del Proyecto
+## Project Structure
 
 ```tree
 ejemplo4/
-├── README.md                          # Este archivo
-├── pyproject.toml                     # Dependencias del proyecto (Python/Ansible)
+├── README.md                          # This file
+├── pyproject.toml                     # Project dependencies (Python/Ansible)
 │
 ├── inventario/
-│   └── inventario.ini                 # Inventario de dispositivos de red
+│   └── inventario.ini                 # Network device inventory
 │
 ├── group_vars/
 │   └── cisco_ios/
-│       └── vault.yaml                 # Credenciales encriptadas con Ansible Vault
+│       └── vault.yaml                 # Credentials encrypted with Ansible Vault
 │
 ├── modelo/
-│   └── modelo.yaml                    # Modelo de datos de la infraestructura
+│   └── modelo.yaml                    # Infrastructure data model
 │
 ├── templates/
-│   └── inter_access_cfg.j2            # Template Jinja2 para interfaces de acceso
+│   └── inter_access_cfg.j2            # Jinja2 template for access interfaces
 │
-├── configs/                           # Archivos de configuración generados
+├── configs/                           # Generated configuration files
 │   ├── SW-Bld_A_int_access.cfg
 │   └── SW-Bld_B_int_access.cfg
 │
-└── playbooks/ (en raíz del proyecto)
-    ├── .vault-pass                    # Contraseña del vault (¡NO VERSIONAR!)
-    ├── play_create_codigo.yaml        # Playbook para generar configuraciones
-    └── play_config_devices.yaml       # Playbook para aplicar configuraciones
+└── playbooks/ (in project root)
+    ├── .vault-pass                    # Vault password (DO NOT VERSION!)
+    ├── play_create_codigo.yaml        # Playbook to generate configurations
+    └── play_config_devices.yaml       # Playbook to apply configurations
 ```
 
-## Componentes Principales
+## Main Components
 
-### 1. Inventario (`inventario/inventario.ini`)
+### 1. Inventory (`inventario/inventario.ini`)
 
-Define todos los dispositivos de red organizados por grupos y sus variables de conexión:
+Defines all network devices organized by groups and their connection variables:
 
-- **Grupos de switches:**
-  - `cisco_ios_access_bsas` - Switches de acceso en Buenos Aires
-  - `cisco_ios_access_cba` - Switches de acceso en Córdoba
-  - `cisco_ios_core` - Switches del core de red
-  - `cisco_ios_datacenter` - Switches del datacenter
+- **Switch groups:**
+  - `cisco_ios_access_bsas` - Access switches in Buenos Aires
+  - `cisco_ios_access_cba` - Access switches in Córdoba
+  - `cisco_ios_core` - Core network switches
+  - `cisco_ios_datacenter` - Datacenter switches
 
-- **Variables globales:**
-  - Conexión: `ansible.netcommon.network_cli`
-  - Usuario: `netsim`
+- **Global variables:**
+  - Connection: `ansible.netcommon.network_cli`
+  - User: `netsim`
   - Network OS: `cisco.ios.ios`
-  - Autenticación: Contraseña (sin clave pública SSH)
+  - Authentication: Password (no SSH public key)
 
 ### 2. Ansible Vault (`group_vars/cisco_ios/vault.yaml`)
 
-Almacena credenciales encriptadas para el grupo `cisco_ios`:
+Stores encrypted credentials for the `cisco_ios` group:
 
 ```yaml
-ansible_password: [ENCRIPTADO]
-ansible_become_password: [ENCRIPTADO]
+ansible_password: [ENCRYPTED]
+ansible_become_password: [ENCRYPTED]
 ```
 
-**Comando para ver el contenido:**
+**Command to view content:**
 
 ```bash
 ansible-vault view group_vars/cisco_ios/vault.yaml --vault-password-file .vault-pass
 ```
 
-### 3. Modelo de Datos (`modelo/modelo.yaml`)
+### 3. Data Model (`modelo/modelo.yaml`)
 
-Archivo centralizado que define toda la infraestructura de red usando el patrón **Source of Truth**:
+Centralized file that defines the entire network infrastructure using the **Source of Truth** pattern:
 
-**Estructura:**
+**Structure:**
 
-- **Metadatos:** Información del proyecto
-- **hosts_groups:** Mapeo de grupos de hosts
-- **infra_spec.devices:** Especificación detallada de cada dispositivo
+- **Metadata:** Project information
+- **hosts_groups:** Host group mapping
+- **infra_spec.devices:** Detailed specification for each device
   - Management (IP, interface)
-  - Interfaces físicas y SVIs
+  - Physical interfaces and SVIs
   - VLANs
-  - Routing (para switches core)
+  - Routing (for core switches)
 
-**Características:**
+**Features:**
 
-- Utiliza YAML anchors (`&`) y aliases (`<<: *`) para reutilización de configuraciones
-- Define plantillas de interfaces: `int_trunk_access`, `int_trunk_core`, `int_access`, `int_svi`
+- Uses YAML anchors (`&`) and aliases (`<<: *`) for configuration reusability
+- Defines interface templates: `int_trunk_access`, `int_trunk_core`, `int_access`, `int_svi`
 
-### 4. Template Jinja2 (`templates/inter_access_cfg.j2`)
+### 4. Jinja2 Template (`templates/inter_access_cfg.j2`)
 
-Template que genera configuración de interfaces de acceso para Cisco IOS:
+Template that generates access interface configuration for Cisco IOS:
 
 ```jinja
 !
@@ -137,7 +137,7 @@ interface {{ interface.name }}
 {% endfor -%}
 ```
 
-**Salida generada** (ejemplo para SW-Bld_A):
+**Generated output** (example for SW-Bld_A):
 
 ```text
 !
@@ -157,109 +157,109 @@ interface GigabitEthernet1/2
 
 ### Playbook 1: `play_create_codigo.yaml`
 
-**Propósito:** Genera archivos de configuración desde templates Jinja2
+**Purpose:** Generate configuration files from Jinja2 templates
 
-**Proceso:**
+**Process:**
 
-1. Lee el modelo de datos de `modelo/modelo.yaml`
-2. Ejecuta sobre el grupo `cisco_ios` (switches de acceso)
-3. Extrae las interfaces del dispositivo del modelo
-4. Renderiza el template `inter_access_cfg.j2`
-5. Guarda el resultado en `configs/{{ hostname }}_int_access.cfg`
+1. Reads data model from `modelo/modelo.yaml`
+2. Executes on `cisco_ios` group (access switches)
+3. Extracts device interfaces from model
+4. Renders the `inter_access_cfg.j2` template
+5. Saves result in `configs/{{ hostname }}_int_access.cfg`
 
-**Uso:**
+**Usage:**
 
 ```bash
-ansible-playbook ansible-playbook -i inventario/inventario.ini ./play_create_codigo.yaml --vault-password-file ./.vault-pass
+ansible-playbook -i inventario/inventario.ini ./play_create_codigo.yaml --vault-password-file ./.vault-pass
 ```
 
-**Salida:**
+**Output:**
 
 - `configs/SW-Bld_A_int_access.cfg`
 - `configs/SW-Bld_B_int_access.cfg`
 
 ### Playbook 2: `play_config_devices.yaml`
 
-**Propósito:** Aplica las configuraciones generadas a los dispositivos reales
+**Purpose:** Apply generated configurations to real devices
 
-**Proceso:**
+**Process:**
 
-1. Lee el modelo de datos de `modelo/modelo.yaml`
-2. Ejecuta sobre el grupo `cisco_ios`
-3. Lee el archivo de configuración generado para cada dispositivo
-4. Aplica la configuración usando el módulo `cisco.ios.ios_config`
-5. Si hay cambios, ejecuta el handler para guardar la configuración
+1. Reads data model from `modelo/modelo.yaml`
+2. Executes on `cisco_ios` group
+3. Reads generated configuration file for each device
+4. Applies configuration using `cisco.ios.ios_config` module
+5. If there are changes, executes handler to save configuration
 
-**Características:**
+**Features:**
 
-- Requiere autenticación mediante Ansible Vault
-- Solo guarda si hay cambios (handler condicional)
-- Conexión segura por SSH con autenticación por contraseña
+- Requires authentication via Ansible Vault
+- Only saves if there are changes (conditional handler)
+- Secure SSH connection with password authentication
 
-## Guía de Uso
+## Usage Guide
 
-1. **Archivo `.vault-pass`** en el directorio raíz con la contraseña del vault
+1. **`.vault-pass` file** in root directory with vault password
 
-### Workflow Completo
+### Complete Workflow
 
-#### Paso 1: Generar Configuraciones
+#### Step 1: Generate Configurations
 
 ```bash
 ansible-playbook -i inventario/inventario.ini ./play_create_codigo.yaml --vault-password-file ./.vault-pass
 ```
 
-**Verifica la salida:**
+**Verify output:**
 
 ```bash
 cat configs/SW-Bld_A_int_access.cfg
 cat configs/SW-Bld_B_int_access.cfg
 ```
 
-#### Paso 2: Aplicar Configuraciones a Dispositivos
+#### Step 2: Apply Configurations to Devices
 
 ```bash
-aansible-playbook -i inventario/inventario.ini ./play_config_devices.yaml --vault-password-file ./.vault-pass
+ansible-playbook -i inventario/inventario.ini ./play_config_devices.yaml --vault-password-file ./.vault-pass
 ```
 
-### Verificación del Inventario
+### Inventory Verification
 
 ```bash
-# Listar todos los hosts
+# List all hosts
 ansible-inventory -i ./inventario/inventario.ini --list --vault-password-file .vault-pass
 
-# Ver variables de un host específico (con vault desencriptado)
+# View specific host variables (with decrypted vault)
 ansible-inventory -i ./inventario/inventario.ini \
   --host SW-Bld_A \
   --vault-password-file .vault-pass
 ```
 
-## Gestión de Ansible Vault
+## Ansible Vault Management
 
-### Crear archivo vault
+### Create vault file
 
 ```bash
 ansible-vault create group_vars/cisco_ios/vault.yaml --vault-password-file .vault-pass
 ```
 
-### Editar archivo vault
+### Edit vault file
 
 ```bash
 ansible-vault edit group_vars/cisco_ios/vault.yaml --vault-password-file .vault-pass
 ```
 
-### Ver contenido del vault
+### View vault content
 
 ```bash
 ansible-vault view group_vars/cisco_ios/vault.yaml --vault-password-file .vault-pass
 ```
 
-### Cambiar contraseña del vault
+### Change vault password
 
 ```bash
 ansible-vault rekey group_vars/cisco_ios/vault.yaml
 ```
 
-### Contenido esperado del vault
+### Expected vault content
 
 ```yaml
 ansible_password: password
@@ -268,7 +268,7 @@ ansible_become_password: password
 
 ## Troubleshooting
 
-### Problema 1: Error de autenticación SSH
+### Problem 1: SSH Authentication Error
 
 **Error:**
 
@@ -276,27 +276,27 @@ ansible_become_password: password
 Failed to authenticate public key: Access denied for 'publickey'
 ```
 
-**Solución:**
-Asegúrate de que en `inventario.ini` está configurado:
+**Solution:**
+Make sure `inventario.ini` is configured with:
 
 ```ini
 [cisco_ios:vars]
 ansible_ssh_common_args="-o PubkeyAuthentication=no -o PreferredAuthentications=password"
 ```
 
-### Problema 2: Variables del vault no se cargan
+### Problem 2: Vault variables not loading
 
-**Error:** Ansible no puede conectarse, credenciales no encontradas
+**Error:** Ansible cannot connect, credentials not found
 
-**Solución:**
-Ejecuta los playbooks desde el **directorio raíz del proyecto**, no desde subdirectorios:
+**Solution:**
+Run playbooks from the **project root directory**, not from subdirectories:
 
 ```bash
 cd /path/to/ejemplo4
 ansible-playbook play_config_devices.yaml -i inventario/inventario.ini --vault-password-file .vault-pass
 ```
 
-### Problema 3: Archivo vault-pass no encontrado
+### Problem 3: Vault-pass file not found
 
 **Error:**
 
@@ -304,15 +304,15 @@ ansible-playbook play_config_devices.yaml -i inventario/inventario.ini --vault-p
 ERROR! The vault password file ./.vault-pass was not found
 ```
 
-**Solución:**
-Crea el archivo `.vault-pass` con la contraseña:
+**Solution:**
+Create the `.vault-pass` file with the password:
 
 ```bash
-echo "tu_contraseña_vault" > .vault-pass
+echo "your_vault_password" > .vault-pass
 chmod 600 .vault-pass
 ```
 
-### Problema 4: Módulo cisco.ios no encontrado
+### Problem 4: cisco.ios module not found
 
 **Error:**
 
@@ -320,80 +320,80 @@ chmod 600 .vault-pass
 ERROR! couldn't resolve module/action 'cisco.ios.ios_config'
 ```
 
-**Solución:**
+**Solution:**
 
 ```bash
 ansible-galaxy collection install cisco.ios
 ```
 
-## Mejores Prácticas Implementadas
+## Implemented Best Practices
 
 ### 1. Infrastructure as Code (IaC)
 
-- Toda la configuración de red está definida en el modelo de datos
-- Versionable con Git
-- Reproducible en cualquier entorno
+- All network configuration is defined in the data model
+- Version control with Git
+- Reproducible in any environment
 
-### 2. Separación de Datos y Lógica
+### 2. Data and Logic Separation
 
-- Modelo de datos centralizado (`modelo.yaml`)
-- Templates reutilizables (`inter_access_cfg.j2`)
-- Playbooks simples y legibles
+- Centralized data model (`modelo.yaml`)
+- Reusable templates (`inter_access_cfg.j2`)
+- Simple and readable playbooks
 
-### 3. Seguridad
+### 3. Security
 
-- Credenciales encriptadas con Ansible Vault
-- Archivo `.vault-pass` no versionado (añadir a `.gitignore`)
-- Autenticación por contraseña sin claves SSH expuestas
+- Credentials encrypted with Ansible Vault
+- `.vault-pass` file not versioned (add to `.gitignore`)
+- Password authentication without exposed SSH keys
 
-### 4. Idempotencia
+### 4. Idempotency
 
-- Los playbooks pueden ejecutarse múltiples veces sin efectos adversos
-- Solo se guardan cambios si hay modificaciones
+- Playbooks can be executed multiple times without adverse effects
+- Only saves changes if there are modifications
 
 ### 5. DRY (Don't Repeat Yourself)
 
-- Uso de YAML anchors y aliases para reutilización
-- Templates Jinja2 para generación de código
-- Variables centralizadas
+- Use of YAML anchors and aliases for reusability
+- Jinja2 templates for code generation
+- Centralized variables
 
-## Flujo de Trabajo del Proyecto
+## Project Workflow
 
 ```text
 ┌──────────────────┐
 │  modelo.yaml     │  ← Source of Truth
-│  (Datos)         │
+│  (Data)          │
 └────────┬─────────┘
          │
          ▼
 ┌──────────────────┐
-│ Template Jinja2  │
-│ (Lógica)         │
+│ Jinja2 Template  │
+│ (Logic)          │
 └────────┬─────────┘
          │
          ▼ play_create_codigo.yaml
 ┌──────────────────┐
-│ Configs/*.cfg    │  ← Configuraciones generadas
+│ Configs/*.cfg    │  ← Generated configurations
 └────────┬─────────┘
          │
          ▼ play_config_devices.yaml
 ┌──────────────────┐
-│ Dispositivos     │  ← Switches Cisco IOS
-│ de Red           │
+│ Network          │  ← Cisco IOS Switches
+│ Devices          │
 └──────────────────┘
 ```
 
-## Referencias
+## References
 
 - [Ansible Documentation](https://docs.ansible.com/)
 - [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)
 - [Ansible Vault Guide](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
 - [Jinja2 Templates](https://jinja.palletsprojects.com/)
 
-## Licencia
+## License
 
-Proyecto educativo - UTN-FRC Academia Cisco - Network Automation Engineer Course
+Educational project - UTN-FRC Cisco Academy - Network Automation Engineer Course
 
 ---
 
-**Última actualización**: Diciembre 2025
+**Last updated**: December 2025
