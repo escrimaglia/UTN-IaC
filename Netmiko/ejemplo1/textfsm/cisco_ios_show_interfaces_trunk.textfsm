@@ -1,0 +1,11 @@
+Value Required PORT (\S+)
+Value VLANS_PERMITIDAS ([\d,\-]+)
+
+Start
+  ^Port\s+Vlans allowed on trunk\s*$$ -> Permitidas
+  ^.*
+
+Permitidas
+  ^${PORT}\s+${VLANS_PERMITIDAS}\s*$$ -> Record
+  ^\s*$$ -> Start
+  ^.*
