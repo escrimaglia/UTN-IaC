@@ -22,8 +22,11 @@ El proyecto incluye ejemplos de:
 ├── ejemplo1_schema.json    # Schema para ejemplo básico
 ├── ejemplo2_datos.yaml     # Ejemplo de dispositivos de red
 ├── ejemplo2_schema.json    # Schema para dispositivos
+├── ejemplo3_datos.yaml     # Ejemplo que FALLA a proposito (additionalProperties)
+├── ejemplo3_schema.json    # Schema restrictivo: maxLength, pattern, minimum/maximum
 ├── reutilizacion_a.yaml    # Ejemplo de merge keys (<<)
 ├── reutilizacion_b.yaml    # Ejemplo de anchors y aliases
+├── reutilizacion_c.yaml    # Merge keys aplicados a parametros de conexion
 ├── pyproject.toml          # Configuración del proyecto
 └── .python-version         # Versión de Python requerida
 ```
@@ -85,6 +88,20 @@ Modelo completo de infraestructura de red que incluye:
 
 - **[ejemplo1_datos.yaml](ejemplo1_datos.yaml)**: Modelo simple con metadatos básicos
 - **[ejemplo2_datos.yaml](ejemplo2_datos.yaml)**: Modelo de dispositivos con IPs IPv4/IPv6
+- **[ejemplo3_datos.yaml](ejemplo3_datos.yaml)**: **está diseñado para NO validar.** Su esquema usa
+  restricciones más finas (`maxLength`, `pattern`, `minimum`/`maximum`) y cierra el objeto con
+  `additionalProperties: false`; el dato trae un `fecha_creacion` que el esquema no declara.
+  Al validarlo se obtiene:
+
+  ```text
+  -> El modelo de datos es inválido:
+  Additional properties are not allowed ('fecha_creacion' was unexpected)
+  Path: []
+  Validator: additionalProperties
+  ```
+
+  El objetivo del ejercicio es ver **cómo se lee un error de validación**: qué validador falló, en qué
+  ruta y por qué. Que falle no es un bug del repositorio.
 
 ### 3. Reutilización de Código YAML
 
@@ -112,6 +129,27 @@ commands: &base_commands
 job1:
   steps: *base_commands
 ```
+
+#### Merge Keys aplicados a la conexión ([reutilizacion_c.yaml](reutilizacion_c.yaml))
+
+El caso realista, y el eslabón entre los dos ejemplos anteriores y el modelo de verdad: los
+parámetros de conexión se declaran una vez y cada dispositivo solo aporta su `host`.
+
+```yaml
+datos_devices: &common_devices
+  device_type: cisco_ios
+  user: admin
+  password: secret
+  global_delay_factor: 2
+
+devices:
+  - host: 10.1.1.1
+    <<: *common_devices
+  - host: 10.1.1.2
+    <<: *common_devices
+```
+
+Con cuarenta dispositivos, cambiar el `global_delay_factor` es editar **una** línea.
 
 ## Esquemas de Validación
 

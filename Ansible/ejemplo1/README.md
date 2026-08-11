@@ -54,7 +54,6 @@ ejemplo1/
 ├── playbook1.yaml              # Consultas a dispositivos Cisco IOS
 ├── playbook2.yaml              # Visualización y manipulación de variables
 ├── playbook3.yaml              # Uso de hosts dinámicos desde modelo de datos
-├── mostrar_variables.yaml      # Ejemplos avanzados de manejo de variables
 ├── modelo_datos/
 │   └── modelo_datos.yaml       # Modelo de datos de la infraestructura
 ├── json_files/
@@ -196,6 +195,15 @@ set_fact:
 
 # Acceso a hostvars
 var: hostvars[inventory_hostname]
+
+# Acceso directo a los metadatos del modelo
+var: modelo.metadatos
+
+# Formateo personalizado de metadatos
+msg: "Proyecto: {{ modelo.metadatos.proyecto }}, Version: {{ modelo.metadatos.version }}"
+
+# Variables del sistema que Ansible expone por host
+var: hostvars[inventory_hostname].playbook_dir
 ```
 
 ---
@@ -217,43 +225,6 @@ ansible-playbook -i inventario.ini playbook3.yaml
 ```
 
 **Nota importante:** El uso de hosts dinámicos puede causar errores en `--syntax-check` ya que las variables no están disponibles en tiempo de validación.
-
-### mostrar_variables.yaml - Ejemplos Avanzados
-
-**Propósito:** Tutorial completo sobre manejo de variables en Ansible
-
-**Características:**
-
-- Delegación de tareas a localhost
-- Acceso a metadatos del modelo
-- Iteración sobre estructuras de datos
-- Creación de variables con `set_fact`
-- Inspección de `hostvars`
-- Lectura de archivos JSON externos
-
-**Ejecución:**
-
-```bash
-ansible-playbook -i inventario.ini mostrar_variables.yaml
-```
-
-**Ejemplos incluidos:**
-
-```yaml
-# Acceso a metadatos
-var: modelo.metadatos
-
-# Formateo personalizado
-msg: "Proyecto: {{ modelo.metadatos.proyecto }}, Version: {{ modelo.metadatos.version }}"
-
-# Iteración
-{% for device in modelo.infra_spec.devices %}
-Hostname: {{ device.hostname }}
-{% endfor %}
-
-# Variables específicas
-var: hostvars[inventory_hostname].playbook_dir
-```
 
 ## Variables
 
