@@ -27,11 +27,13 @@ Codigo/
 │   ├── ejemplo1/          # Comandos básicos y TextFSM → README.md
 │   ├── ejemplo2/          # Configuración con templates Jinja2 → README.md
 │   └── sim_caso/          # Simulacro integrador → README.md
-└── Ansible/               # Automatización con Ansible
-    ├── ejemplo1/          # Variables y comandos show → README.md
-    ├── ejemplo2/          # Estructuras de programación → README.md
-    ├── ejemplo3/          # Ansible Vault y templates → README.md
-    └── sim_caso/          # Simulacro empresarial completo → README.md
+├── Ansible/               # Automatización con Ansible
+│   ├── ejemplo1/          # Variables y comandos show → README.md
+│   ├── ejemplo2/          # Estructuras de programación → README.md
+│   ├── ejemplo3/          # Ansible Vault y templates → README.md
+│   ├── sim_caso/          # Simulacro empresarial completo → README.md
+│   └── ssh-config/        # Config SSH para equipos con algoritmos legacy
+└── RestApi/               # Automatización vía REST API → README.md
 ```
 
 **Nota:** Los directorios marcados con `→ README.md` contienen documentación detallada en sus respectivos archivos README.
@@ -190,6 +192,25 @@ Codigo/
 **Características:** IaC completo, alta disponibilidad (VRRP, EIGRP), validación automática, documentación técnica autogenerada.
 
 **Flujo:** Generar configs → Aplicar a dispositivos → Generar documentación
+
+---
+
+### 6. Automatización con REST API
+
+**Ubicación:** [`RestApi/`](RestApi/) → **[Ver README completo](RestApi/README.md)**
+
+**Objetivo:** Resolver el mismo problema del curso sobre HTTP en lugar de SSH, con la API como interfaz del equipo.
+
+**Temas:** Cliente `requests` con sesión y reintentos, autenticación por token, verificación TLS, códigos de estado, y reconciliación declarativa con `--dry-run` y eliminación de deriva.
+
+**Componentes:**
+
+- `rest_clase.py`: clase `RestClient` — login, sesión reutilizable, manejo de errores
+- `mock_server.py`: simulador de controlador (FastAPI), para trabajar sin equipo real
+- `rest_eje1.py`, `rest_eje2.py`, `rest_eje3.py`: ejemplos progresivos
+- `integrador3.py`: integrador que reconcilia el estado del equipo contra `modelo_datos.yaml`
+
+**Cómo correrlo:** levantar `mock_server.py` en una terminal y ejecutar los ejemplos en otra. No hace falta laboratorio.
 
 ---
 

@@ -1,0 +1,38 @@
+# Entornos virtuales — cada carpeta es un proyecto uv independiente.
+# `pyproject.toml`, `uv.lock` y `.python-version` SI se versionan: son la receta
+# para recrear el entorno con `uv sync`. El entorno en sí, no.
+.venv/
+venv/
+env/
+
+# Bytecode y caches de Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Ansible
+*.retry
+
+# Secretos. El archivo de contraseña de Ansible Vault nunca entra al repositorio:
+# el contenido cifrado sí, la llave para descifrarlo no.
+.vault-pass
+.vault_pass
+vault-pass*
+vault_pass*
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+.git-credentials
+
+# Salidas generadas por los ejemplos (se regeneran corriendo los scripts)
+*.log
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.idea/
