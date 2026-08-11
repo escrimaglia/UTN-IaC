@@ -45,7 +45,11 @@ ejemplo1/
 ├── netmiko_eje2.py         # Example 2: TextFSM usage
 ├── netmiko_eje3.py         # Example 3: Optimization parameters
 ├── netmiko_eje4.py         # Example 4: CiscoConfParse
-└── integrador1.py          # Integrator example using NetmikoInicial class
+├── integrador1.py          # Integrator example using NetmikoInicial class
+└── textfsm/                # Custom TextFSM template (chapter 9 §9.4)
+    ├── cisco_ios_show_interfaces_trunk.textfsm
+    ├── salida_trunk.txt    # Real output, versioned as a test case
+    └── probar_template.py  # Tests the template against the file, no device
 ```
 
 ## Script Descriptions
@@ -110,6 +114,76 @@ Implements a Python class that encapsulates Netmiko's most common functionalitie
 - Converts plain text outputs to structured data
 - Facilitates extraction of specific information
 - Enables programmatic data processing
+
+### 3b. `textfsm/` - Writing a custom template
+
+**Objective**: Write a TextFSM template when the command has none in `ntc-templates`.
+
+`use_textfsm=True` works because somebody wrote the template. `ntc-templates` 7.7.0 ships 127
+templates for `cisco_ios`, but **`show interfaces trunk` is not among them**: the command exists in
+IOS, the template does not. This directory solves that.
+
+The command's difficulty is that it returns **four tables with the same `Port` header** in a single
+output. A single-rule template treats them as one and returns six rows for two interfaces —each one
+repeated three times, coming from tables that mean different things— with no field that tells them
+apart. The solution is a state machine, which is what TextFSM is.
+
+**Testing it, with no device and no lab:**
+
+```bash
+cd textfsm
+uv run python probar_template.py
+```
+
+The script prints in Spanish; its output is shown verbatim:
+
+```text
+['PORT', 'VLANS_PERMITIDAS']
+[
+  {
+    "PORT": "Gi0/1",
+    "VLANS_PERMITIDAS": "10,20"
+  },
+  {
+    "PORT": "Gi0/2",
+    "VLANS_PERMITIDAS": "10,20"
+  }
+]
+
+-> OK: 2 filas, como se esperaba
+```
+
+The script compares against the expected result and returns exit code 1 if it does not match, so it
+works as a test in a pipeline. `salida_trunk.txt` is the test case: the day an IOS update changes the
+format, this fails here instead of failing in production.
+
+**Wiring it into Netmiko.** The trap is in the search order: if `NET_TEXTFSM` is defined, it wins,
+and the 127 community templates **stop being visible**. Adding a custom template that way fixes one
+command and breaks the other hundred and twenty-seven. The recipe that breaks nothing is to copy the
+full set and add your own to it:
+
+```bash
+uv run python -c "import ntc_templates, os; \
+  print(os.path.join(os.path.dirname(ntc_templates.__file__), 'templates'))"
+
+cp -r /path/printed/above ~/mis-templates
+cp textfsm/cisco_ios_show_interfaces_trunk.textfsm ~/mis-templates/
+export NET_TEXTFSM=~/mis-templates
+```
+
+And declare it in that directory's `index`. Entries are tried top to bottom, so this one goes
+**before** the `show interfaces status` entry:
+
+```text
+cisco_ios_show_interfaces_trunk.textfsm, .*, cisco_ios, sh[[ow]] int[[erfaces]] tr[[unk]]
+```
+
+> ⚠️ The template is verified against `salida_trunk.txt`, not against a device. If the switches write
+> `GigabitEthernet0/1` instead of `Gi0/1`, the `(\S+)` regex takes them just the same, but it is
+> worth regenerating `salida_trunk.txt` with real lab output.
+
+See chapter 9 §9.4 of the book for the full explanation: the `Value` modifiers, the rule actions, and
+why TextFSM cannot do joins.
 
 ### 4. `netmiko_eje3.py` - Performance Optimization
 
