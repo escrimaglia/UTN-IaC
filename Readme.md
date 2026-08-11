@@ -27,11 +27,13 @@ Codigo/
 │   ├── ejemplo1/          # Basic commands and TextFSM → README.md
 │   ├── ejemplo2/          # Configuration with Jinja2 templates → README.md
 │   └── sim_caso/          # Integration simulation → README.md
-└── Ansible/               # Ansible automation
-    ├── ejemplo1/          # Variables and show commands → README.md
-    ├── ejemplo2/          # Programming structures → README.md
-    ├── ejemplo3/          # Ansible Vault and templates → README.md
-    └── sim_caso/          # Complete enterprise simulation → README.md
+├── Ansible/               # Ansible automation
+│   ├── ejemplo1/          # Variables and show commands → README.md
+│   ├── ejemplo2/          # Programming structures → README.md
+│   ├── ejemplo3/          # Ansible Vault and templates → README.md
+│   ├── sim_caso/          # Complete enterprise simulation → README.md
+│   └── ssh-config/        # SSH config for devices with legacy algorithms
+└── RestApi/               # Automation via REST API → README.md
 ```
 
 **Note:** Directories marked with `→ README.md` contain detailed documentation in their respective README files.
@@ -190,6 +192,25 @@ Codigo/
 **Features:** Complete IaC, high availability (VRRP, EIGRP), automatic validation, auto-generated technical documentation.
 
 **Flow:** Generate configs → Apply to devices → Generate documentation
+
+---
+
+### 6. Automation with REST API
+
+**Location:** [`RestApi/`](RestApi/) → **[See full README](RestApi/README.md)**
+
+**Objective:** Solve the same course problem over HTTP instead of SSH, with the API as the device interface.
+
+**Topics:** `requests` client with session and retries, token authentication, TLS verification, status codes, and declarative reconciliation with `--dry-run` and drift removal.
+
+**Components:**
+
+- `rest_clase.py`: `RestClient` class — login, reusable session, error handling
+- `mock_server.py`: controller simulator (FastAPI), to work without real hardware
+- `rest_eje1.py`, `rest_eje2.py`, `rest_eje3.py`: progressive examples
+- `integrador3.py`: integrator that reconciles device state against `modelo_datos.yaml`
+
+**How to run it:** start `mock_server.py` in one terminal and run the examples in another. No lab required.
 
 ---
 

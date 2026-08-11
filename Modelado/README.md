@@ -22,8 +22,11 @@ The project includes examples of:
 ├── ejemplo1_schema.json    # Schema for basic example
 ├── ejemplo2_datos.yaml     # Network devices example
 ├── ejemplo2_schema.json    # Schema for devices
+├── ejemplo3_datos.yaml     # Example that FAILS on purpose (additionalProperties)
+├── ejemplo3_schema.json    # Restrictive schema: maxLength, pattern, minimum/maximum
 ├── reutilizacion_a.yaml    # Merge keys example (<<)
 ├── reutilizacion_b.yaml    # Anchors and aliases example
+├── reutilizacion_c.yaml    # Merge keys applied to connection parameters
 ├── pyproject.toml          # Project configuration
 └── .python-version         # Required Python version
 ```
@@ -85,6 +88,20 @@ Complete network infrastructure model that includes:
 
 - **[ejemplo1_datos.yaml](ejemplo1_datos.yaml)**: Simple model with basic metadata
 - **[ejemplo2_datos.yaml](ejemplo2_datos.yaml)**: Device model with IPv4/IPv6 IPs
+- **[ejemplo3_datos.yaml](ejemplo3_datos.yaml)**: **is designed NOT to validate.** Its schema uses
+  finer constraints (`maxLength`, `pattern`, `minimum`/`maximum`) and closes the object with
+  `additionalProperties: false`; the data carries a `fecha_creacion` the schema does not declare.
+  Validating it yields (the script prints in Spanish):
+
+  ```text
+  -> El modelo de datos es inválido:
+  Additional properties are not allowed ('fecha_creacion' was unexpected)
+  Path: []
+  Validator: additionalProperties
+  ```
+
+  The point of the exercise is to see **how a validation error is read**: which validator failed, at
+  what path, and why. Its failing is not a repository bug.
 
 ### 3. YAML Code Reuse
 
@@ -112,6 +129,27 @@ commands: &base_commands
 job1:
   steps: *base_commands
 ```
+
+#### Merge Keys applied to the connection ([reutilizacion_c.yaml](reutilizacion_c.yaml))
+
+The realistic case, and the link between the two previous examples and the real model: the
+connection parameters are declared once and each device only contributes its `host`.
+
+```yaml
+datos_devices: &common_devices
+  device_type: cisco_ios
+  user: admin
+  password: secret
+  global_delay_factor: 2
+
+devices:
+  - host: 10.1.1.1
+    <<: *common_devices
+  - host: 10.1.1.2
+    <<: *common_devices
+```
+
+With forty devices, changing `global_delay_factor` means editing **one** line.
 
 ## Validation Schemas
 

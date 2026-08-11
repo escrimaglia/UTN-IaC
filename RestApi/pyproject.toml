@@ -1,0 +1,19 @@
+[project]
+name = "restapi"
+version = "1.0"
+description = "Automatizacion de red con REST API y RESTCONF"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.32.0",
+    "pyyaml>=6.0.3",
+    "jsonschema>=4.25.1",
+]
+
+[project.optional-dependencies]
+# Solo para el simulador de controlador (mock_server.py).
+# No hace falta para hablar con un equipo real.
+mock = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+]

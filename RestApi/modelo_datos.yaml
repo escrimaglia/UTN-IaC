@@ -1,0 +1,46 @@
+# Modelo de datos para el controlador REST.
+# Es el MISMO Source of Truth del capitulo 6: solo cambia el transporte.
+
+modelo:
+  metadatos:
+    proyecto: "Red Cordillera Logistica - API REST"
+    version: "1.0"
+    autor: "Ed Scrimaglia"
+    fecha_creacion: "2026-03-15"
+    time_zone: "America/Argentina/Buenos_Aires"
+
+  infra_spec:
+    devices:
+      SW-Bld_A:
+        management:
+          ip: "127.0.0.1"
+          interface: "GigabitEthernet0/0"
+        vlans:
+          - {id: 10, name: "Ingenieria"}
+          - {id: 20, name: "Produccion"}
+          - {id: 30, name: "Finanzas"}
+        interfaces:
+          - name: "GigabitEthernet0/1"
+            description: "Conexion a SW-CORE_1"
+            mode: trunk
+            trunk_mode: auto
+            allowed_vlans: [10, 20, 30]
+            vlan: null
+          - name: "GigabitEthernet0/2"
+            description: "Conexion a SW-CORE_2"
+            mode: trunk
+            trunk_mode: auto
+            allowed_vlans: [10, 20, 30]
+            vlan: null
+          - name: "GigabitEthernet1/1"
+            description: "Conexion a PC_ING_1"
+            mode: access
+            trunk_mode: null
+            allowed_vlans: null
+            vlan: 10
+          - name: "GigabitEthernet1/2"
+            description: "Conexion a PC_PROD_1"
+            mode: access
+            trunk_mode: null
+            allowed_vlans: null
+            vlan: 20

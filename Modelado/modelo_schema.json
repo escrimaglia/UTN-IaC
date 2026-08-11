@@ -23,7 +23,8 @@
                         },
                         "fecha_creacion": {
                             "type": "string",
-                            "format": "date-time"
+                            "format": "date",
+                            "$comment": "El dato es 2024-06-15, o sea una fecha sin hora: el formato correcto es date, no date-time. Con date-time este campo era invalido, pero el error no se veia: FormatChecker omite en silencio los formatos que no puede verificar, y date-time necesita el paquete rfc3339-validator, que no esta en las dependencias del modulo. Ver el capitulo 7 del libro."
                         }
                     },
                     "required": ["proyecto", "version", "autor", "fecha_creacion"]

@@ -1,4 +1,20 @@
 # Script principal que utiliza (importa) las clases y scripts
+#
+# ATENCION: este script NO CORRE, y es a proposito. Tiene dos errores
+# encadenados, y los dos son material del capitulo 4 del libro:
+#
+#   1. Falla en la linea de `basic.suma(5, 5)` con
+#      TypeError: Basicas.suma() takes 2 positional arguments but 3 were given
+#      Los metodos de Basicas y Advance estan definidos SIN `self`, asi que el
+#      primer argumento se lo come la instancia. Ver el capitulo 4 §4.6, que
+#      explica el error y sus tres arreglos posibles.
+#
+#   2. Si se arregla el primero, aparece el segundo:
+#      AttributeError, porque `basic.multiplica()` y `basic.divide()` no existen
+#      en la clase Basicas. Solo estan como funciones en script_basic.py, que es
+#      de donde se importan arriba.
+#
+# El ejercicio consiste en arreglar los dos, en ese orden.
 
 from class_oper_basic_math import Basicas
 from class_oper_advance_math import Advance
